@@ -10,6 +10,7 @@ public class CellBehaviour : MonoBehaviour, IDropHandler
         var block = eventData.pointerDrag.GetComponent<BlockBehaviour>();
         if (block != null)
         {
+            Debug.Log("drop cell");
             block.Place(this);
         }
     }

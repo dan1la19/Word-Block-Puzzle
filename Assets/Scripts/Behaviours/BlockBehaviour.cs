@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IDropHandler
+public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private Vector3 startPos;
     private bool isDragable = true;
@@ -28,15 +28,17 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, ID
         transform.position = transform.position;
     }
 
-    public void OnDrop(PointerEventData eventData)
-    {
-        transform.position = startPos;
-        @group.blocksRaycasts = true;
-    }
-
     public void Place(CellBehaviour cell)
     {
         transform.position = cell.transform.position;
+        startPos = transform.position;
         isDragable = false;
+    }
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        Debug.Log("drop");
+        transform.position = startPos;
+        if(isDragable) @group.blocksRaycasts = true;
     }
 }
