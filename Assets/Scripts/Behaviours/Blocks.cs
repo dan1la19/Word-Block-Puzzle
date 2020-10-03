@@ -13,6 +13,12 @@ public class Blocks : MonoBehaviour
 	{
 	}
 
+	private void Start()
+	{
+		var list = GetBlocks();
+		Debug.Log(list.Count.ToString());
+	}
+
 	public List<Block> GetBlocks()
 	{
 		var file = new FileStream(FileName, FileMode.Open);
