@@ -4,19 +4,18 @@ using UnityEngine;
 public class Block
 {
 	private int row;
-
-	public BlockCell[,] Cells;
+	public string [,] Letters;
 
 	public Block()
 	{
-		Cells = new BlockCell[3, 3];
+		Letters = new string[3, 3];
 	}
 
 	public void AddLine(string line)
 	{
 		for (var i = 0; i < line.Length; i++)
 		{
-			Cells[row, i] = new BlockCell(line[i]);
+			Letters[row, i] = line[i].ToString();
 		}
 		row++;
 	}

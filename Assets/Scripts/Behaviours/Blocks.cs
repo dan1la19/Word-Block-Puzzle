@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Blocks : MonoBehaviour
 {
+	private List<Block> blocks;
+	private int index;
+
 	public string FileName;
-	public List<Block> blocks;
-	public int index = 0;
 	public GameObject Block;
 	public GameObject Canvas;
 
@@ -18,7 +20,7 @@ public class Blocks : MonoBehaviour
 		blocks = GetBlocks();
 	}
 
-	public List<Block> GetBlocks()
+	private List<Block> GetBlocks()
 	{
 		var file = new FileStream(FileName, FileMode.Open);
 		var reader = new StreamReader(file);
@@ -39,6 +41,23 @@ public class Blocks : MonoBehaviour
 		return blocks;
 	}
 
+	private void SetParameters(GameObject newBlock, Block block)
+	{
+		for (var i = 0; i < 9; i++) 
+		{
+			var letter = block.Letters[i / 3, i % 3];
+			var child = newBlock.transform.GetChild(i);
+			if (letter is null)
+			{
+				child.Find("Shell").gameObject.SetActive(false);
+			}
+			else
+			{
+				child.Find("Shell/Text").gameObject.GetComponent<Text>().text = letter;
+			}
+		}
+	}
+
 	public void NewBlock()
 	{
 		if (index == blocks.Count)
@@ -47,7 +66,8 @@ public class Blocks : MonoBehaviour
 			return;
 		}
 		Debug.Log("New Block");
-		var newBlock = Instantiate(Block, Block.transform.position, Quaternion.identity) as GameObject;
+		var newBlock = Instantiate(Block, Block.transform.localPosition, Quaternion.identity) as GameObject;
+		SetParameters(newBlock, blocks[index]);
 		newBlock.transform.SetParent(Canvas.transform, false);
 		index++;
 	}
