@@ -1,6 +1,7 @@
 ﻿using System;
+using UnityEngine;
 
-public class Block
+public class Block : MonoBehaviour
 {
 	private int row;
 

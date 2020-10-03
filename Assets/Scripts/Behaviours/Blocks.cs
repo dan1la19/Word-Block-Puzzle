@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using UnityEngine;
 
-public class Blocks
+public class Blocks : MonoBehaviour
 {
 	public string FileName;
 
