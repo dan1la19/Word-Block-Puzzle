@@ -21,11 +21,10 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     public void OnDrag(PointerEventData eventData)
     {
-        if(!isDragable) return;
+        if (!isDragable) return;
         @group.blocksRaycasts = false;
         var targetPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.position = new Vector3(targetPos.x, targetPos.y, startPos.z);
-        transform.position = transform.position;
     }
 
     public void Place(CellBehaviour cell)

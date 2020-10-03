@@ -8,15 +8,14 @@ using UnityEngine;
 public class Blocks : MonoBehaviour
 {
 	public string FileName;
-
-	public Blocks()
-	{
-	}
+	public List<Block> blocks;
+	public int index = 0;
+	public GameObject Block;
+	public GameObject Canvas;
 
 	private void Start()
 	{
-		var list = GetBlocks();
-		Debug.Log(list.Count.ToString());
+		blocks = GetBlocks();
 	}
 
 	public List<Block> GetBlocks()
@@ -25,18 +24,31 @@ public class Blocks : MonoBehaviour
 		var reader = new StreamReader(file);
 		var blocks = new List<Block>();
 		var block = new Block();
-
 		while (!reader.EndOfStream)
-		{
+		{	
 			var line = reader.ReadLine();
-			if (line == "")
+			if (line == "*")
 			{
 				blocks.Add(block);
 				block = new Block();
 				continue;
 			}
-			block.AddLine(reader.ReadLine());
+			block.AddLine(line);
 		}
+		reader.Close();
 		return blocks;
+	}
+
+	public void NewBlock()
+	{
+		if (index == blocks.Count)
+		{
+			Debug.Log("Blocks Ended");
+			return;
+		}
+		Debug.Log("New Block");
+		var newBlock = Instantiate(Block, Block.transform.position, Quaternion.identity) as GameObject;
+		newBlock.transform.SetParent(Canvas.transform, false);
+		index++;
 	}
 }

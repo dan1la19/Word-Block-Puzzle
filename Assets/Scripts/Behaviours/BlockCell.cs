@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class Cell : MonoBehaviour
+public class BlockCell
 {
     public char Letter;
 
-    public Cell(char letter)
+    public BlockCell(char letter)
     {
         Letter = letter;
     }
