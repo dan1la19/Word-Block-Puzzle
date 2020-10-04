@@ -18,6 +18,7 @@ public class Blocks : MonoBehaviour
 	private void Start()
 	{
 		blocks = GetBlocks();
+		NewBlock();
 	}
 
 	private List<Block> GetBlocks()
@@ -66,7 +67,7 @@ public class Blocks : MonoBehaviour
 			return;
 		}
 		Debug.Log("New Block");
-		var newBlock = Instantiate(Block, Block.transform.localPosition, Quaternion.identity) as GameObject;
+		var newBlock = Instantiate(Block, Block.transform.position, Quaternion.identity) as GameObject;
 		SetParameters(newBlock, blocks[index]);
 		newBlock.transform.SetParent(Canvas.transform, false);
 		index++;

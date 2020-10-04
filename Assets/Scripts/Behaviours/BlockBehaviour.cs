@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private Vector3 startPos;
-    private bool isDragable = true;
     private CanvasGroup group;
 
     private void Start()
     {
-        @group = GetComponent<CanvasGroup>();
+        group = GetComponent<CanvasGroup>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -21,8 +21,7 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (!isDragable) return;
-        @group.blocksRaycasts = false;
+        group.blocksRaycasts = false;
         var targetPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.position = new Vector3(targetPos.x, targetPos.y, startPos.z);
     }
@@ -30,14 +29,25 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     public void Place(CellBehaviour cell)
     {
         transform.position = cell.transform.position;
-        startPos = transform.position;
-        isDragable = false;
+        //startPos = transform.position;
+
+        for (var i = 0; i < 9; i++)
+        {
+            var child = gameObject.transform.GetChild(i);
+            var letter = child.Find("Shell/Text").gameObject.GetComponent<Text>().text;
+            if (letter != null)
+            {
+                child.Find("Shell").gameObject.SetActive(false);
+            }
+        }
+
+        Destroy(gameObject);
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
         Debug.Log("drop");
         transform.position = startPos;
-        if(isDragable) @group.blocksRaycasts = true;
+        group.blocksRaycasts = true;
     }
 }
