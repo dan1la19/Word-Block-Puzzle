@@ -5,15 +5,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler//, IDropHandler
+public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private Vector3 startPos;
-    private CanvasGroup group;
     private FieldBehaviour fieldBehaviour;
 
     private void Start()
     {
-        group = GetComponent<CanvasGroup>();
         fieldBehaviour = transform.parent.parent.
             Find("Field").GetComponent<FieldBehaviour>();
     }
@@ -25,15 +23,12 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     public void OnDrag(PointerEventData eventData)
     {
-        group.blocksRaycasts = false;
         var targetPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.position = new Vector3(targetPos.x, targetPos.y, startPos.z);
     }
 
-    public void Place(CellBehaviour cell)
+    public void Place()
     {
-        transform.position = cell.transform.position;
-        //startPos = transform.position;
         for (var i = 0; i < 9; i++)
         {
             var blockCell = gameObject.transform.GetChild(i);
@@ -65,13 +60,19 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        Debug.Log("drop");
-        transform.position = startPos;
-        group.blocksRaycasts = true;
+        Debug.Log(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+        if (CanPutBlock())
+        {
+            Place();
+        }
+        else
+        {
+            transform.position = startPos;
+        }
     }
 
     private bool CanPutBlock()
     {
-        return false;
+        return true;
     }
 }
