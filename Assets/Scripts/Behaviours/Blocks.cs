@@ -18,7 +18,8 @@ public class Blocks : MonoBehaviour
 	private void Start()
 	{
 		blocks = GetBlocks();
-		NewBlock();
+		for (var i = 0; i < 3; i++)
+			NewBlock();
 	}
 
 	private List<Block> GetBlocks()

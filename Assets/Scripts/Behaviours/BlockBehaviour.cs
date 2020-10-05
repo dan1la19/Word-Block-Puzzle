@@ -1,17 +1,21 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler//, IDropHandler
 {
     private Vector3 startPos;
     private CanvasGroup group;
+    private FieldBehaviour fieldBehaviour;
 
     private void Start()
     {
         group = GetComponent<CanvasGroup>();
+        fieldBehaviour = transform.parent.parent.
+            Find("Field").GetComponent<FieldBehaviour>();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -30,18 +34,33 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     {
         transform.position = cell.transform.position;
         //startPos = transform.position;
-
         for (var i = 0; i < 9; i++)
         {
-            var child = gameObject.transform.GetChild(i);
-            var letter = child.Find("Shell/Text").gameObject.GetComponent<Text>().text;
-            if (letter != null)
+            var blockCell = gameObject.transform.GetChild(i);
+            var letter = blockCell.Find("Shell/Text").gameObject.GetComponent<Text>().text;
+            if (letter != "")
             {
-                child.Find("Shell").gameObject.SetActive(false);
+                var pos = GetPosition(blockCell.position.x, blockCell.position.y);
+                var fieldCell = fieldBehaviour.GetFieldCell(Math.Round(pos.x, 6), Math.Round(pos.y, 6));
+                if (fieldCell != null)
+                {
+                    fieldCell.Find("Text").GetComponent<Text>().text = letter;
+                }
             }
         }
-
         Destroy(gameObject);
+        transform.parent.GetComponent<Blocks>().NewBlock();
+    }
+
+    private Vector2 GetPosition(float x, float y)
+    {
+        x -= fieldBehaviour.startPos.x;
+        y -= fieldBehaviour.startPos.y;
+        x = (float)Math.Truncate(x / fieldBehaviour.dist) * fieldBehaviour.dist;
+        y = (float)Math.Truncate(y / fieldBehaviour.dist) * fieldBehaviour.dist;
+        x += fieldBehaviour.startPos.x;
+        y += fieldBehaviour.startPos.y;
+        return new Vector2(x, y);
     }
 
     public void OnEndDrag(PointerEventData eventData)
@@ -49,5 +68,10 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         Debug.Log("drop");
         transform.position = startPos;
         group.blocksRaycasts = true;
+    }
+
+    private bool CanPutBlock()
+    {
+        return false;
     }
 }
