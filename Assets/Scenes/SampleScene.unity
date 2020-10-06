@@ -1624,7 +1624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 091ebf9a645f59046981deb22cd90dcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FileName: Words.txt
+  FileName: word_rus.txt
 --- !u!1001 &254077481
 PrefabInstance:
   m_ObjectHideFlags: 0
