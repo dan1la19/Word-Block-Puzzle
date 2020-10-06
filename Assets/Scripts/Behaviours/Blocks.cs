@@ -48,14 +48,15 @@ public class Blocks : MonoBehaviour
 		for (var i = 0; i < 9; i++) 
 		{
 			var letter = block.Letters[i / 3, i % 3];
-			var child = newBlock.transform.GetChild(i);
+			var blockCell = newBlock.transform.GetChild(i);
 			if (letter is null)
 			{
-				child.Find("Shell").gameObject.SetActive(false);
+				blockCell.Find("Shell").gameObject.SetActive(false);
 			}
 			else
 			{
-				child.Find("Shell/Text").gameObject.GetComponent<Text>().text = letter;
+
+				blockCell.Find("Shell/Text").gameObject.GetComponent<Text>().text = letter;
 			}
 		}
 	}

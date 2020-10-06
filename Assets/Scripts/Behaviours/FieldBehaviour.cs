@@ -19,8 +19,9 @@ public class FieldBehaviour : MonoBehaviour
         for (var i = 0; i < 100; i++)
         {
             var fieldCell = transform.GetChild(i);
-            var x = Math.Round(fieldCell.position.x - dist / 2, 6);
-            var y = Math.Round(fieldCell.position.y - dist / 2, 6);
+            var pos = fieldCell.position - new Vector3(dist / 2, dist / 2);
+            var x = Math.Round(pos.x, 6);
+            var y = Math.Round(pos.y, 6);
 
             if (!fieldCells.ContainsKey(x))
             {

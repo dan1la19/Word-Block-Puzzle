@@ -27,8 +27,23 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         transform.position = new Vector3(targetPos.x, targetPos.y, startPos.z);
     }
 
-    public void Place()
+    public void Post()
     {
+        for (var i = 0; i < 9; i++)
+        {
+            var blockCell = gameObject.transform.GetChild(i);
+            var letter = blockCell.Find("Shell/Text").gameObject.GetComponent<Text>().text;
+            if (letter != "")
+            {
+                var pos = GetPosition(blockCell.position.x, blockCell.position.y);
+                var fieldCell = fieldBehaviour.GetFieldCell(Math.Round(pos.x, 6), Math.Round(pos.y, 6));
+                if (fieldCell == null || fieldCell.Find("Text").GetComponent<Text>().text != "")
+                {
+                    transform.position = startPos;
+                    return;
+                }
+            }
+        }
         for (var i = 0; i < 9; i++)
         {
             var blockCell = gameObject.transform.GetChild(i);
@@ -51,8 +66,8 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     {
         x -= fieldBehaviour.startPos.x;
         y -= fieldBehaviour.startPos.y;
-        x = (float)Math.Truncate(x / fieldBehaviour.dist) * fieldBehaviour.dist;
-        y = (float)Math.Truncate(y / fieldBehaviour.dist) * fieldBehaviour.dist;
+        x = (float)Math.Floor(x / fieldBehaviour.dist) * fieldBehaviour.dist;
+        y = (float)Math.Floor(y / fieldBehaviour.dist) * fieldBehaviour.dist;
         x += fieldBehaviour.startPos.x;
         y += fieldBehaviour.startPos.y;
         return new Vector2(x, y);
@@ -60,15 +75,7 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        Debug.Log(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        if (CanPutBlock())
-        {
-            Place();
-        }
-        else
-        {
-            transform.position = startPos;
-        }
+        Post();
     }
 
     private bool CanPutBlock()
