@@ -94,7 +94,10 @@ public class Blocks : MonoBehaviour
 		for (var i = 0; i < 9; i++)
 		{
 			var blockCell = newBlock.transform.GetChild(i);
-			var letter = ((char)('а' + rnd.Next(0, 33))).ToString();
+			var c = rnd.Next(0, 33);
+			if (c == 32) 
+				c = 33;
+			var letter = ((char)('а' + c)).ToString();
 			if (!pattern.Contains(i))
 			{
 				blockCell.Find("Shell").gameObject.SetActive(false);
