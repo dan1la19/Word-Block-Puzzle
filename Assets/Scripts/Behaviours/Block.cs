@@ -6,12 +6,9 @@ public class Block
 {
 	private int row;
 	public string [,] Letters;
-	public List<int> indexesCells;
-	//public int Count;
 
 	public Block()
 	{
-		indexesCells = new List<int>();
 		Letters = new string[3, 3];
 	}
 
