@@ -44,6 +44,7 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
                 }
             }
         }
+
         for (var i = 0; i < 9; i++)
         {
             var blockCell = gameObject.transform.GetChild(i);
@@ -52,13 +53,13 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
             {
                 var pos = GetPosition(blockCell.position.x, blockCell.position.y);
                 var fieldCell = fieldBehaviour.GetFieldCell(Math.Round(pos.x, 6), Math.Round(pos.y, 6));
-                if (fieldCell != null)
-                {
-                    fieldCell.Find("Text").GetComponent<Text>().text = letter;
-                }
+                fieldCell.Find("Text").GetComponent<Text>().text = letter;
+                fieldBehaviour.UpdateCheckItems(fieldCell);
             }
         }
+
         Destroy(gameObject);
+        fieldBehaviour.DeleteWords();
         transform.parent.GetComponent<Blocks>().NewBlock();
     }
 
@@ -76,10 +77,5 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     public void OnEndDrag(PointerEventData eventData)
     {
         Post();
-    }
-
-    private bool CanPutBlock()
-    {
-        return true;
     }
 }
