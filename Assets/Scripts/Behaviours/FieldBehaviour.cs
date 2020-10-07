@@ -11,6 +11,7 @@ public class FieldBehaviour : MonoBehaviour
     private Dictionary<double, Dictionary<double, Transform>> fieldCells;
     public Dictionary<Transform, int> indexesTransforms;
     private HashSet<string> words;
+    private Text ScoreText;
 
     public float dist { get; set; }
     public Vector3 startPos { get; set; }
@@ -20,6 +21,7 @@ public class FieldBehaviour : MonoBehaviour
 
     void Start()
     {
+        ScoreText = transform.parent.Find("Score").GetComponent<Text>();
         indexesTransforms = new Dictionary<Transform, int>();
         dist = transform.GetChild(91).position.x - transform.GetChild(90).position.x;
         startPos = transform.GetChild(90).position - new Vector3(dist / 2, dist / 2);
@@ -104,13 +106,18 @@ public class FieldBehaviour : MonoBehaviour
         AddIndexesLetters(indexesLetters, lineX, 'x');
         AddIndexesLetters(indexesLetters, lineY, 'y');
 
-        var points = indexesLetters.Count; //Баллы за удаление слов
+        UpdateScore(indexesLetters.Count);
         foreach (var index in indexesLetters)
         {
             transform.GetChild(index).Find("Text").GetComponent<Text>().text = "";
         }
         lineX = new HashSet<int>();
         lineY = new HashSet<int>();
+    }
+
+    public void UpdateScore(int points)
+    {
+        ScoreText.text = (int.Parse(ScoreText.text) + points).ToString();
     }
 
     public void UpdateCheckItems(Transform fieldCell)

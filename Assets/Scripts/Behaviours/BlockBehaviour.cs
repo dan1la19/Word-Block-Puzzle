@@ -45,20 +45,22 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
             }
         }
 
+        var countLetters = 0;
         for (var i = 0; i < 9; i++)
         {
             var blockCell = gameObject.transform.GetChild(i);
             var letter = blockCell.Find("Shell/Text").gameObject.GetComponent<Text>().text;
             if (letter != "")
             {
+                countLetters++;
                 var pos = GetPosition(blockCell.position.x, blockCell.position.y);
                 var fieldCell = fieldBehaviour.GetFieldCell(Math.Round(pos.x, 6), Math.Round(pos.y, 6));
                 fieldCell.Find("Text").GetComponent<Text>().text = letter;
                 fieldBehaviour.UpdateCheckItems(fieldCell);
             }
         }
-
         Destroy(gameObject);
+        fieldBehaviour.UpdateScore(countLetters);
         fieldBehaviour.DeleteWords();
         transform.parent.GetComponent<Blocks>().NewBlock();
     }

@@ -77,36 +77,41 @@ public class Blocks : MonoBehaviour
 	{
 		if (index == blocks.Count)
 		{
-			GenerateBlock();
+			CreateBlock(BlockGenerator.GenerateBlock());
 			return;
 		}
-		var newBlock = Instantiate(Block, Block.transform.position, Quaternion.identity) as GameObject;
-		SetParameters(newBlock, blocks[index]);
-		newBlock.transform.SetParent(Canvas.transform, false);
+		CreateBlock(blocks[index]);
 		index++;
 	}
 
-	private void GenerateBlock()
+	private void CreateBlock(Block block)
 	{
 		var newBlock = Instantiate(Block, Block.transform.position, Quaternion.identity) as GameObject;
-		var rnd = new System.Random();
-		var pattern = templates[rnd.Next(0, templates.Count - 1)];
-		for (var i = 0; i < 9; i++)
-		{
-			var blockCell = newBlock.transform.GetChild(i);
-			var c = rnd.Next(0, 33);
-			if (c == 32) 
-				c = 33;
-			var letter = ((char)('а' + c)).ToString();
-			if (!pattern.Contains(i))
-			{
-				blockCell.Find("Shell").gameObject.SetActive(false);
-			}
-			else
-			{
-				blockCell.Find("Shell/Text").gameObject.GetComponent<Text>().text = letter;
-			}
-		}
+		SetParameters(newBlock, block);
 		newBlock.transform.SetParent(Canvas.transform, false);
 	}
+
+	//private void GenerateBlock()
+	//{
+	//	var newBlock = Instantiate(Block, Block.transform.position, Quaternion.identity) as GameObject;
+	//	var rnd = new System.Random();
+	//	var pattern = templates[rnd.Next(0, templates.Count - 1)];
+	//	for (var i = 0; i < 9; i++)
+	//	{
+	//		var blockCell = newBlock.transform.GetChild(i);
+	//		var c = rnd.Next(0, 33);
+	//		if (c == 32) 
+	//			c = 33;
+	//		var letter = ((char)('а' + c)).ToString();
+	//		if (!pattern.Contains(i))
+	//		{
+	//			blockCell.Find("Shell").gameObject.SetActive(false);
+	//		}
+	//		else
+	//		{
+	//			blockCell.Find("Shell/Text").gameObject.GetComponent<Text>().text = letter;
+	//		}
+	//	}
+	//	newBlock.transform.SetParent(Canvas.transform, false);
+	//}
 }
