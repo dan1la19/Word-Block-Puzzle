@@ -1624,7 +1624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 091ebf9a645f59046981deb22cd90dcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FileName: word_rus.txt
+  FileName: dict.txt
 --- !u!1001 &254077481
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9315,7 +9315,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 800}
-  m_SizeDelta: {x: 200, y: 200}
+  m_SizeDelta: {x: 800, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1552974695
 MonoBehaviour:

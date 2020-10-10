@@ -67,12 +67,12 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     private Vector2 GetPosition(float x, float y)
     {
-        x -= fieldBehaviour.startPos.x;
-        y -= fieldBehaviour.startPos.y;
-        x = (float)Math.Floor(x / fieldBehaviour.dist) * fieldBehaviour.dist;
-        y = (float)Math.Floor(y / fieldBehaviour.dist) * fieldBehaviour.dist;
-        x += fieldBehaviour.startPos.x;
-        y += fieldBehaviour.startPos.y;
+        x -= fieldBehaviour.StartPos.x;
+        y -= fieldBehaviour.StartPos.y;
+        x = (float)Math.Floor(x / fieldBehaviour.Dist) * fieldBehaviour.Dist;
+        y = (float)Math.Floor(y / fieldBehaviour.Dist) * fieldBehaviour.Dist;
+        x += fieldBehaviour.StartPos.x;
+        y += fieldBehaviour.StartPos.y;
         return new Vector2(x, y);
     }
 

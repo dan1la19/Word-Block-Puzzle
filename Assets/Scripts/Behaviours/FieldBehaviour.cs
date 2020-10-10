@@ -13,8 +13,8 @@ public class FieldBehaviour : MonoBehaviour
     private HashSet<string> words;
     private Text ScoreText;
 
-    public float dist { get; set; }
-    public Vector3 startPos { get; set; }
+    public float Dist { get; set; }
+    public Vector3 StartPos { get; set; }
     public string FileName;
     private HashSet<int> lineX = new HashSet<int>();
     private HashSet<int> lineY = new HashSet<int>();
@@ -23,8 +23,8 @@ public class FieldBehaviour : MonoBehaviour
     {
         ScoreText = transform.parent.Find("Score").GetComponent<Text>();
         indexesTransforms = new Dictionary<Transform, int>();
-        dist = transform.GetChild(91).position.x - transform.GetChild(90).position.x;
-        startPos = transform.GetChild(90).position - new Vector3(dist / 2, dist / 2);
+        Dist = transform.GetChild(91).position.x - transform.GetChild(90).position.x;
+        StartPos = transform.GetChild(90).position - new Vector3(Dist / 2, Dist / 2);
         SetFieldCells();
         words = GetWords();
     }
@@ -36,7 +36,7 @@ public class FieldBehaviour : MonoBehaviour
         {
             var fieldCell = transform.GetChild(i);
             indexesTransforms[fieldCell] = i;
-            var pos = fieldCell.position - new Vector3(dist / 2, dist / 2);
+            var pos = fieldCell.position - new Vector3(Dist / 2, Dist / 2);
             var x = Math.Round(pos.x, 6);
             var y = Math.Round(pos.y, 6);
 
@@ -53,14 +53,17 @@ public class FieldBehaviour : MonoBehaviour
         var file = new FileStream(FileName, FileMode.Open);
         var reader = new StreamReader(file);
         var words = new HashSet<string>();
+
         while (!reader.EndOfStream)
         {
-            words.Add(reader.ReadLine());
+            var line = reader.ReadLine();
+            words.Add(line);
+            SyllablesBehaviour.ParseLine(line);
         }
+        SyllablesBehaviour.CalculateProbabilitys();
         reader.Close();
         return words;
     }
-
 
     private void AddIndexesLetters(HashSet<int> indexesLetters, HashSet<int> line, char flag)
     {

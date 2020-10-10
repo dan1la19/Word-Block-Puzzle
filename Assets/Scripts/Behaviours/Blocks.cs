@@ -14,22 +14,9 @@ public class Blocks : MonoBehaviour
 	public string FileName;
 	public GameObject Block;
 	public GameObject Canvas;
-	private List<List<int>> templates;
 
 	private void Start()
 	{
-		templates = new List<List<int>>() {
-			new List<int>() { 3, 4, 5},
-			new List<int>() { 1, 4, 7 },
-			new List<int>() { 0, 1, 3, 4},
-			new List<int>() { 1, 4},
-			new List<int>() { 3, 4},
-			new List<int>() { 1},
-			new List<int>() { 1, 4, 5},
-			new List<int>() { 0, 1, 4},
-			new List<int>() { 1, 2, 4},
-		};
-
 		blocks = GetBlocks();
 		for (var i = 0; i < 3; i++)
 			NewBlock();
@@ -90,28 +77,4 @@ public class Blocks : MonoBehaviour
 		SetParameters(newBlock, block);
 		newBlock.transform.SetParent(Canvas.transform, false);
 	}
-
-	//private void GenerateBlock()
-	//{
-	//	var newBlock = Instantiate(Block, Block.transform.position, Quaternion.identity) as GameObject;
-	//	var rnd = new System.Random();
-	//	var pattern = templates[rnd.Next(0, templates.Count - 1)];
-	//	for (var i = 0; i < 9; i++)
-	//	{
-	//		var blockCell = newBlock.transform.GetChild(i);
-	//		var c = rnd.Next(0, 33);
-	//		if (c == 32) 
-	//			c = 33;
-	//		var letter = ((char)('а' + c)).ToString();
-	//		if (!pattern.Contains(i))
-	//		{
-	//			blockCell.Find("Shell").gameObject.SetActive(false);
-	//		}
-	//		else
-	//		{
-	//			blockCell.Find("Shell/Text").gameObject.GetComponent<Text>().text = letter;
-	//		}
-	//	}
-	//	newBlock.transform.SetParent(Canvas.transform, false);
-	//}
 }
