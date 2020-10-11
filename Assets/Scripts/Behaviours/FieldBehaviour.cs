@@ -95,6 +95,10 @@ public class FieldBehaviour : MonoBehaviour
                 }
             }
 
+            var word = letters.ToString(startIndex, length);
+            if (word != "")
+                Debug.Log(word);
+
             for (var i = startIndex; i < startIndex + length; i++)
             {
                 var index = flag == 'x' ? i * 10 + c : c * 10 + i;
