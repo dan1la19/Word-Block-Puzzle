@@ -37,7 +37,8 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
             {
                 var pos = GetPosition(blockCell.position.x, blockCell.position.y);
                 var fieldCell = fieldBehaviour.GetFieldCell(Math.Round(pos.x, 6), Math.Round(pos.y, 6));
-                if (fieldCell == null || fieldCell.Find("Text").GetComponent<Text>().text != "")
+                var text = fieldCell.Find("Text").GetComponent<Text>();
+                if (fieldCell == null || text.text != "" && text.text != " " && letter != " ")
                 {
                     transform.position = startPos;
                     return;
@@ -62,6 +63,7 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         Destroy(gameObject);
         fieldBehaviour.UpdateScore(countLetters);
         fieldBehaviour.DeleteWords();
+
         transform.parent.GetComponent<Blocks>().NewBlock();
     }
 

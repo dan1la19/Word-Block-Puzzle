@@ -49,7 +49,7 @@ public class Blocks : MonoBehaviour
 		{
 			var letter = block.Letters[i / 3, i % 3];
 			var blockCell = newBlock.transform.GetChild(i);
-			if (letter is null || letter == "" || letter == " ")
+			if (letter is null || letter == ""/* || letter == " "*/)
 			{
 				blockCell.Find("Shell").gameObject.SetActive(false);
 			}
@@ -76,5 +76,12 @@ public class Blocks : MonoBehaviour
 		var newBlock = Instantiate(Block, Block.transform.position, Quaternion.identity) as GameObject;
 		SetParameters(newBlock, block);
 		newBlock.transform.SetParent(Canvas.transform, false);
+	}
+	
+	public void Click()
+	{
+		var block = new Block();
+		block.AddLine(" ");
+		CreateBlock(block);
 	}
 }
