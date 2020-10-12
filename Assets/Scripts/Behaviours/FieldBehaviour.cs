@@ -25,6 +25,7 @@ public class FieldBehaviour : MonoBehaviour
         indexesTransforms = new Dictionary<Transform, int>();
         Dist = transform.GetChild(91).position.x - transform.GetChild(90).position.x;
         StartPos = transform.GetChild(90).position - new Vector3(Dist / 2, Dist / 2);
+        Debug.Log($"dist = {Dist}, startPos = {StartPos}.");
         SetFieldCells();
         words = GetWords();
     }
@@ -37,8 +38,10 @@ public class FieldBehaviour : MonoBehaviour
             var fieldCell = transform.GetChild(i);
             indexesTransforms[fieldCell] = i;
             var pos = fieldCell.position - new Vector3(Dist / 2, Dist / 2);
-            var x = Math.Round(pos.x, 6);
-            var y = Math.Round(pos.y, 6);
+            var x = Math.Round(pos.x, Config.Rounding);
+            var y = Math.Round(pos.y, Config.Rounding);
+
+            if (i == 40) Debug.Log($"x = {x}, y = {y}.");
 
             if (!fieldCells.ContainsKey(x))
             {
