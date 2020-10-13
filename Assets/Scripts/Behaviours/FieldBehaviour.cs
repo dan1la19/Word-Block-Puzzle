@@ -118,6 +118,8 @@ public class FieldBehaviour : MonoBehaviour
         foreach (var index in indexesLetters)
         {
             var fieldCell = transform.GetChild(index);
+            //TODO Анимация
+
             fieldCell.gameObject.GetComponent<Image>().sprite = Sprite;
             fieldCell.Find("Text").GetComponent<Text>().text = "";
         }
