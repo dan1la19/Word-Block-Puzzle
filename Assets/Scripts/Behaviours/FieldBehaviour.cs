@@ -13,6 +13,7 @@ public class FieldBehaviour : MonoBehaviour
     private HashSet<string> words;
     private Text ScoreText;
 
+    public Sprite Sprite;
     public float Dist { get; set; }
     public Vector3 StartPos { get; set; }
     public string FileName;
@@ -25,7 +26,6 @@ public class FieldBehaviour : MonoBehaviour
         indexesTransforms = new Dictionary<Transform, int>();
         Dist = transform.GetChild(91).position.x - transform.GetChild(90).position.x;
         StartPos = transform.GetChild(90).position - new Vector3(Dist / 2, Dist / 2);
-        Debug.Log($"dist = {Dist}, startPos = {StartPos}.");
         SetFieldCells();
         words = GetWords();
     }
@@ -40,8 +40,6 @@ public class FieldBehaviour : MonoBehaviour
             var pos = fieldCell.position - new Vector3(Dist / 2, Dist / 2);
             var x = Math.Round(pos.x, Config.Rounding);
             var y = Math.Round(pos.y, Config.Rounding);
-
-            if (i == 40) Debug.Log($"x = {x}, y = {y}.");
 
             if (!fieldCells.ContainsKey(x))
             {
@@ -119,7 +117,9 @@ public class FieldBehaviour : MonoBehaviour
         UpdateScore(indexesLetters.Count);
         foreach (var index in indexesLetters)
         {
-            transform.GetChild(index).Find("Text").GetComponent<Text>().text = "";
+            var fieldCell = transform.GetChild(index);
+            fieldCell.gameObject.GetComponent<Image>().sprite = Sprite;
+            fieldCell.Find("Text").GetComponent<Text>().text = "";
         }
         lineX = new HashSet<int>();
         lineY = new HashSet<int>();

@@ -10,6 +10,7 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 {
     private Vector3 startPos;
     private FieldBehaviour fieldBehaviour;
+    public Sprite Sprite;
 
     private void Start()
     {
@@ -37,7 +38,6 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
             if (letter != "")
             {
                 var pos = GetPosition(blockCell.position.x, blockCell.position.y);
-                Debug.Log($"{Math.Round(pos.x, Config.Rounding)} {Math.Round(pos.y, Config.Rounding)}");
                 var fieldCell = fieldBehaviour.GetFieldCell(Math.Round(pos.x, Config.Rounding), Math.Round(pos.y, Config.Rounding));
                 var text = fieldCell != null ? fieldCell.Find("Text").GetComponent<Text>().text : null;
                 if (text == null || text != "" && text != " " && letter != " ")
@@ -57,7 +57,9 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
             {
                 countLetters++;
                 var pos = GetPosition(blockCell.position.x, blockCell.position.y);
-                var fieldCell = fieldBehaviour.GetFieldCell(Math.Round(pos.x, Config.Rounding), Math.Round(pos.y, Config.Rounding));
+                var fieldCell = fieldBehaviour.
+                    GetFieldCell(Math.Round(pos.x, Config.Rounding), Math.Round(pos.y, Config.Rounding));
+                fieldCell.GetComponent<Image>().sprite = Sprite;
                 fieldCell.Find("Text").GetComponent<Text>().text = letter;
                 fieldBehaviour.UpdateCheckItems(fieldCell);
             }

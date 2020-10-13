@@ -1756,6 +1756,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 091ebf9a645f59046981deb22cd90dcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Sprite: {fileID: 21300000, guid: 6f8b8563f30803847bf214cebe3692ba, type: 3}
   FileName: dict.txt
 --- !u!1001 &254077481
 PrefabInstance:
