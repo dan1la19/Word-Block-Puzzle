@@ -13,7 +13,7 @@ public class FieldBehaviour : MonoBehaviour
     private HashSet<string> words;
     public Text ScoreText;
 
-    public List<HashSet<Transform>> words2and3letters;
+    public HashSet<int> indexesLetters;
     
     public Sprite SpriteDefault;
     public Sprite SpriteSelection;
@@ -25,7 +25,7 @@ public class FieldBehaviour : MonoBehaviour
 
     void Start()
     {
-        words2and3letters = new List<HashSet<Transform>>();
+        indexesLetters = new HashSet<int>();
         indexesTransforms = new Dictionary<Transform, int>();
         Dist = transform.GetChild(91).position.x - transform.GetChild(90).position.x;
         StartPos = transform.GetChild(90).position - new Vector3(Dist / 2, Dist / 2);
@@ -90,43 +90,29 @@ public class FieldBehaviour : MonoBehaviour
                 letters.Append(letter);
             }
 
-            var startIndex = 0;
-            var length = 0;
-            for (var i = 2; i <= 10; i++)
+            for (var length = 2; length <= 10; length++)
             {
-                for (var j = 0; j <= 10 - i; j++)
+                for (var startIndex = 0; startIndex <= 10 - length; startIndex++)
                 {
-                    if (words.Contains(letters.ToString(j, i)))
+                    if (words.Contains(letters.ToString(startIndex, length)))
                     {
-                        startIndex = j;
-                        length = i;
+                        for (var k = startIndex; k < startIndex + length; k++)
+                        {
+                            indexesLetters.Add(indexes[k]);
+                            transform.GetChild(indexes[k]).GetComponent<Image>().sprite = SpriteSelection;
+                        }
                     }
                 }
-            }
-
-            var word = letters.ToString(startIndex, length);
-
-            words2and3letters.Add(new HashSet<Transform>());
-            for (var i = startIndex; i < startIndex + length; i++)
-            {
-                indexesLetters.Add(indexes[i]);
-                transform.GetChild(indexes[i]).GetComponent<Image>().sprite = SpriteSelection;
-                words2and3letters[words2and3letters.Count - 1].Add(transform.GetChild(indexes[i]));
             }
         }
     }
 
     public void HighlightedWords()
     {
-        var indexesLetters = new HashSet<int>();
+        //Debug.Log($"lineX {lineX.Count} lineY {lineY.Count}");
         FindWords(indexesLetters, lineX, 'x');
         FindWords(indexesLetters, lineY, 'y');
 
-        UpdateScore(indexesLetters.Count);
-        foreach (var index in indexesLetters)
-        {
-            //DeleteLetter(transform.GetChild(index));
-        }
         lineX = new HashSet<int>();
         lineY = new HashSet<int>();
     }

@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class ButtonDeleteWord : MonoBehaviour
 {
-    private FieldBehaviour fieldBehaviour; 
+    private FieldBehaviour fieldBehaviour;
+    private int length = 10;
+
     private void Start()
     {
         fieldBehaviour = transform.parent.GetComponent<FieldBehaviour>();
@@ -12,22 +14,35 @@ public class ButtonDeleteWord : MonoBehaviour
 
     public void Click()
     {
-        //fieldBehaviour.DeleteWords();
-        var list = new List<HashSet<Transform>>();
-        foreach (var word in fieldBehaviour.words2and3letters)
+        var visited = new HashSet<int>();
+
+        if (fieldBehaviour.indexesLetters.Contains(fieldBehaviour.indexesTransforms[transform]))
         {
-            if (word.Contains(transform))
-            {
-                foreach (var fieldCell in word)
-                {
-                    fieldBehaviour.DeleteLetter(fieldCell);
-                }
-                list.Add(word);
-            }
-        }
-        foreach(var e in list)
+            var index = fieldBehaviour.indexesTransforms[transform];
+            DeleteLetters(visited, index);
+        } 
+    }
+
+    private void DeleteLetters(HashSet<int> visited, int index)
+    {
+        if (index < 0 || index > length * length) return;
+
+        if (!visited.Contains(index) && fieldBehaviour.indexesLetters.Contains(index))
         {
-            fieldBehaviour.words2and3letters.Remove(e);
+            visited.Add(index);
+            var fieldCell = fieldBehaviour.transform.GetChild(index);
+            fieldBehaviour.DeleteLetter(fieldCell);
+            fieldBehaviour.indexesLetters.Remove(index);
+            fieldBehaviour.UpdateScore(1);
+
+            if (index + 1 % length != length - 1)
+                DeleteLetters(visited, index + 1);
+            if (index - 1 % length != 0)
+                DeleteLetters(visited, index - 1);
+            if (index + length / length != length - 1)
+                DeleteLetters(visited, index + length);
+            if (index - length / length != 0)
+                DeleteLetters(visited, index - length);
         }
     }
 }
