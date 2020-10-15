@@ -11,40 +11,39 @@ public class Blocks : MonoBehaviour
 	private List<Block> blocks;
 	private int index;
 
-	public string FileName;
+	[SerializeField] TextAsset file;
 	public GameObject Block;
 	public GameObject Canvas;
 
 	private void Start()
 	{
 		blocks = GetBlocks();
+		Debug.Log(blocks.Count);
 		for (var i = 0; i < 3; i++)
 		{
 			CreateBlock(blocks[i]);
 			index++;
 		}
-		index++;
-		NewBlocks();
+		//index++;
+		//NewBlocks();
 	}
 
 	private List<Block> GetBlocks()
 	{
-		var file = new FileStream(FileName, FileMode.Open);
-		var reader = new StreamReader(file);
 		var blocks = new List<Block>();
 		var block = new Block();
-		while (!reader.EndOfStream)
-		{	
-			var line = reader.ReadLine();
-			if (line == "*")
+		foreach (var line in file.text.Split('\n'))
+		{
+			if (line == "") continue;
+			var word = line.Remove(line.Length - 1);
+			if (word == "*")
 			{
 				blocks.Add(block);
 				block = new Block();
 				continue;
 			}
-			block.AddLine(line);
+			block.AddLine(word);
 		}
-		reader.Close();
 		return blocks;
 	}
 
@@ -82,6 +81,7 @@ public class Blocks : MonoBehaviour
 
 	private void CreateBlock(Block block)
 	{
+		//TODO Block
 		var newBlock = Instantiate(Block, Block.transform.position, Quaternion.identity);
 		SetParameters(newBlock, block);
 		newBlock.transform.SetParent(Canvas.transform, false);

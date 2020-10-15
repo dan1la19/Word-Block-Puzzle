@@ -9,7 +9,6 @@ public class Syllables
     private List<string> syllables;
     private Dictionary<string, int> repetitionSyllables;
     private int numberSyllables;
-    private System.Random rnd = new System.Random();
 
     public Syllables()
     {
@@ -33,7 +32,7 @@ public class Syllables
 
     public string GetSyllable()
     {
-        var number = rnd.Next(0, 1000);
+        var number = UnityEngine.Random.Range(0, 1000);
 
         for (var i = 0; i < probabilitySyllables.Count; i++)
         {
