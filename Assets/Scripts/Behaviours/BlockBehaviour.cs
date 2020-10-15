@@ -71,7 +71,7 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         fieldBehaviour.UpdateScore(countLetters);
         fieldBehaviour.HighlightedWords();
 
-        transform.parent.GetComponent<Blocks>().NewBlock();
+        transform.parent.GetComponent<Blocks>().NewBlocks();
     }
 
     private Vector2 GetPosition(float x, float y)

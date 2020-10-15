@@ -64,7 +64,7 @@ public static class BlockGenerator
 
 	private static T GetRandomElement<T>(List<T> list, List<int> probabilities)
 	{
-		var number = new System.Random().Next(0, 1000);
+		var number = Random.Range(0, 1000);
 		var ranges = new List<int>();
 		var startRange = 0;
 		for (var i = 0; i < probabilities.Count - 1; i++)

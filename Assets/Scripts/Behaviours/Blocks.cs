@@ -19,7 +19,12 @@ public class Blocks : MonoBehaviour
 	{
 		blocks = GetBlocks();
 		for (var i = 0; i < 3; i++)
-			NewBlock();
+		{
+			CreateBlock(blocks[i]);
+			index++;
+		}
+		index++;
+		NewBlocks();
 	}
 
 	private List<Block> GetBlocks()
@@ -60,15 +65,19 @@ public class Blocks : MonoBehaviour
 		}
 	}
 
-	public void NewBlock()
+	public void NewBlocks()
 	{
-		if (index == blocks.Count)
+		index--;
+		if (index == 0)
 		{
-			CreateBlock(BlockGenerator.GenerateBlock());
-			return;
+			for (var i = 0; i < 3; i++)
+			{
+				CreateBlock(BlockGenerator.GenerateBlock());
+				index++;
+			}
 		}
-		CreateBlock(blocks[index]);
-		index++;
+		//CreateBlock(blocks[index]);
+		//index++;
 	}
 
 	private void CreateBlock(Block block)

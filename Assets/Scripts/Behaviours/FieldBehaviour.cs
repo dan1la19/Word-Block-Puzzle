@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,14 +15,14 @@ public class FieldBehaviour : MonoBehaviour
     public Text ScoreText;
 
     public HashSet<int> indexesLetters;
-    
+
     public Sprite SpriteDefault;
     public Sprite SpriteSelection;
     public float Dist { get; set; }
     public Vector3 StartPos { get; set; }
-    public string FileName;
     private HashSet<int> lineX = new HashSet<int>();
     private HashSet<int> lineY = new HashSet<int>();
+    [SerializeField] TextAsset file;
 
     void Start()
     {
@@ -54,18 +55,14 @@ public class FieldBehaviour : MonoBehaviour
 
     private HashSet<string> GetWords()
     {
-        var file = new FileStream(FileName, FileMode.Open);
-        var reader = new StreamReader(file);
         var words = new HashSet<string>();
-
-        while (!reader.EndOfStream)
+        foreach (var line in file.text.Split('\n'))
         {
-            var line = reader.ReadLine();
-            words.Add(line);
-            SyllablesBehaviour.ParseLine(line);
+            var word = line.Remove(line.Length - 1);
+            words.Add(word);
+            SyllablesBehaviour.ParseLine(word);
         }
         SyllablesBehaviour.CalculateProbabilitys();
-        reader.Close();
         return words;
     }
 
