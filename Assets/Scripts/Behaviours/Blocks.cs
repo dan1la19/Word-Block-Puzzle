@@ -73,7 +73,7 @@ public class Blocks : MonoBehaviour
 
 	private void CreateBlock(Block block)
 	{
-		var newBlock = Instantiate(Block, Block.transform.position, Quaternion.identity) as GameObject;
+		var newBlock = Instantiate(Block, Block.transform.position, Quaternion.identity);
 		SetParameters(newBlock, block);
 		newBlock.transform.SetParent(Canvas.transform, false);
 	}

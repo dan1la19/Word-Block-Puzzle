@@ -33,8 +33,8 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     {
         for (var i = 0; i < 9; i++)
         {
-            var blockCell = gameObject.transform.GetChild(i);
-            var letter = blockCell.Find("Shell/Text").gameObject.GetComponent<Text>().text;
+            var blockCell = transform.GetChild(i);
+            var letter = blockCell.Find("Shell/Text").GetComponent<Text>().text;
             if (letter != "")
             {
                 var pos = GetPosition(blockCell.position.x, blockCell.position.y);
@@ -59,7 +59,10 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
                 var pos = GetPosition(blockCell.position.x, blockCell.position.y);
                 var fieldCell = fieldBehaviour.
                     GetFieldCell(Math.Round(pos.x, Config.Rounding), Math.Round(pos.y, Config.Rounding));
-                fieldCell.GetComponent<Image>().sprite = Sprite;
+                if (letter != " ")
+                {
+                    fieldCell.GetComponent<Image>().sprite = Sprite;
+                }
                 fieldCell.Find("Text").GetComponent<Text>().text = letter;
                 fieldBehaviour.UpdateCheckItems(fieldCell);
             }

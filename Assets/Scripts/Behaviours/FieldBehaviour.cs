@@ -11,7 +11,9 @@ public class FieldBehaviour : MonoBehaviour
     private Dictionary<double, Dictionary<double, Transform>> fieldCells;
     public Dictionary<Transform, int> indexesTransforms;
     private HashSet<string> words;
-    private Text ScoreText;
+    public Text ScoreText;
+
+    public List<HashSet<Transform>> words2and3letters;
 
     public Sprite Sprite;
     public float Dist { get; set; }
@@ -22,7 +24,7 @@ public class FieldBehaviour : MonoBehaviour
 
     void Start()
     {
-        ScoreText = transform.parent.Find("Score").GetComponent<Text>();
+        words2and3letters = new List<HashSet<Transform>>();
         indexesTransforms = new Dictionary<Transform, int>();
         Dist = transform.GetChild(91).position.x - transform.GetChild(90).position.x;
         StartPos = transform.GetChild(90).position - new Vector3(Dist / 2, Dist / 2);
@@ -66,15 +68,20 @@ public class FieldBehaviour : MonoBehaviour
         return words;
     }
 
-    private void AddIndexesLetters(HashSet<int> indexesLetters, HashSet<int> line, char flag)
+    private void FindWords(HashSet<int> indexesLetters, HashSet<int> line, char flag)
     {
         foreach (var c in line)
         {
+            var indexes = new List<int>();
+            for (var i = 0; i < 10; i++)
+            {
+                indexes.Add(flag == 'x' ? i * 10 + c : c * 10 + i);
+            }
+
             var letters = new StringBuilder();
             for (var i = 0; i < 10; i++)
             {
-                var index = flag == 'x' ? i * 10 + c : c * 10 + i;
-                var letter = transform.GetChild(index).Find("Text").GetComponent<Text>().text;
+                var letter = transform.GetChild(indexes[i]).Find("Text").GetComponent<Text>().text;
                 if (letter == "")
                 {
                     letter = " ";
@@ -100,10 +107,12 @@ public class FieldBehaviour : MonoBehaviour
             if (word != "")
                 Debug.Log(word);
 
+            words2and3letters.Add(new HashSet<Transform>());
             for (var i = startIndex; i < startIndex + length; i++)
             {
-                var index = flag == 'x' ? i * 10 + c : c * 10 + i;
-                indexesLetters.Add(index);
+                indexesLetters.Add(indexes[i]);
+                transform.GetChild(indexes[i]).GetComponent<Image>().sprite = null;
+                words2and3letters[words2and3letters.Count - 1].Add(transform.GetChild(indexes[i]));
             }
         }
     }
@@ -111,20 +120,23 @@ public class FieldBehaviour : MonoBehaviour
     public void DeleteWords()
     {
         var indexesLetters = new HashSet<int>();
-        AddIndexesLetters(indexesLetters, lineX, 'x');
-        AddIndexesLetters(indexesLetters, lineY, 'y');
+        FindWords(indexesLetters, lineX, 'x');
+        FindWords(indexesLetters, lineY, 'y');
 
         UpdateScore(indexesLetters.Count);
         foreach (var index in indexesLetters)
         {
-            var fieldCell = transform.GetChild(index);
-            //TODO Анимация
-
-            fieldCell.gameObject.GetComponent<Image>().sprite = Sprite;
-            fieldCell.Find("Text").GetComponent<Text>().text = "";
+            //DeleteLetter(transform.GetChild(index));
         }
         lineX = new HashSet<int>();
         lineY = new HashSet<int>();
+    }
+
+    public void DeleteLetter(Transform fieldCell)
+    {
+        //TODO Анимация
+        fieldCell.GetComponent<Image>().sprite = Sprite;
+        fieldCell.Find("Text").GetComponent<Text>().text = "";
     }
 
     public void UpdateScore(int points)
