@@ -14,8 +14,9 @@ public class FieldBehaviour : MonoBehaviour
     public Text ScoreText;
 
     public List<HashSet<Transform>> words2and3letters;
-
-    public Sprite Sprite;
+    
+    public Sprite SpriteDefault;
+    public Sprite SpriteSelection;
     public float Dist { get; set; }
     public Vector3 StartPos { get; set; }
     public string FileName;
@@ -95,7 +96,7 @@ public class FieldBehaviour : MonoBehaviour
             {
                 for (var j = 0; j <= 10 - i; j++)
                 {
-                    if (words.Contains(letters.ToString(j, i)) && i > length)
+                    if (words.Contains(letters.ToString(j, i)))
                     {
                         startIndex = j;
                         length = i;
@@ -104,20 +105,18 @@ public class FieldBehaviour : MonoBehaviour
             }
 
             var word = letters.ToString(startIndex, length);
-            if (word != "")
-                Debug.Log(word);
 
             words2and3letters.Add(new HashSet<Transform>());
             for (var i = startIndex; i < startIndex + length; i++)
             {
                 indexesLetters.Add(indexes[i]);
-                transform.GetChild(indexes[i]).GetComponent<Image>().sprite = null;
+                transform.GetChild(indexes[i]).GetComponent<Image>().sprite = SpriteSelection;
                 words2and3letters[words2and3letters.Count - 1].Add(transform.GetChild(indexes[i]));
             }
         }
     }
 
-    public void DeleteWords()
+    public void HighlightedWords()
     {
         var indexesLetters = new HashSet<int>();
         FindWords(indexesLetters, lineX, 'x');
@@ -135,7 +134,7 @@ public class FieldBehaviour : MonoBehaviour
     public void DeleteLetter(Transform fieldCell)
     {
         //TODO Анимация
-        fieldCell.GetComponent<Image>().sprite = Sprite;
+        fieldCell.GetComponent<Image>().sprite = SpriteDefault;
         fieldCell.Find("Text").GetComponent<Text>().text = "";
     }
 

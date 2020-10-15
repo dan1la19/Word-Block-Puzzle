@@ -69,7 +69,7 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         }
         Destroy(gameObject);
         fieldBehaviour.UpdateScore(countLetters);
-        fieldBehaviour.DeleteWords();
+        fieldBehaviour.HighlightedWords();
 
         transform.parent.GetComponent<Blocks>().NewBlock();
     }
