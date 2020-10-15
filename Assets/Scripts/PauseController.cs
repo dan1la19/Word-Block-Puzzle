@@ -13,8 +13,6 @@ public class PauseController : MonoBehaviour
     [SerializeField] private Sprite soundOn;
     [SerializeField] private Sprite soundOff;
 
-    private bool isSoundOn;
-
     public void Pause()
     {
         blur.intensity = 0;
@@ -33,9 +31,8 @@ public class PauseController : MonoBehaviour
 
     public void ToggleSound()
     {
-        isSoundOn = !isSoundOn;
-        soundToggle.sprite = isSoundOn ? soundOn : soundOff;
-        //TODO Управление звуком
+        var isAudioOn = AudioManager.instance.ToggleAudio();
+        soundToggle.sprite = isAudioOn ? soundOn : soundOff;
     }
 
     public void Restart()
