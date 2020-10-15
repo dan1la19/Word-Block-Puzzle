@@ -119,7 +119,7 @@ public class FieldBehaviour : MonoBehaviour
 
     public void DeleteLetter(Transform fieldCell)
     {
-        //TODO Анимация
+        AnimationsController.Instance.AnimateLetter(fieldCell);
         fieldCell.GetComponent<Image>().sprite = SpriteDefault;
         fieldCell.Find("Text").GetComponent<Text>().text = "";
     }

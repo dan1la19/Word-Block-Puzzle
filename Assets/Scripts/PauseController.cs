@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Krivodeling.UI.Effects;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PauseController : MonoBehaviour
@@ -39,7 +40,7 @@ public class PauseController : MonoBehaviour
 
     public void Restart()
     {
-        //TODO RESTART
+        SceneManager.LoadScene(0);
     }
 
     public void Like()
