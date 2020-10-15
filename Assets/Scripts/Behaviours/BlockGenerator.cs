@@ -18,7 +18,7 @@ public static class BlockGenerator
 		new List<int>() { 0, 1, 3, 4 },
 		new List<int>() { 0, 1, 2, 5, 8 },
 		new List<int>() { 0, 3, 6, 7, 8 },
-		new List<int>() { 0, 1, 2, 6, 6 },
+		new List<int>() { 0, 1, 2, 3, 6 },
 		new List<int>() { 6, 7, 8, 2, 5 },
 	};
 
