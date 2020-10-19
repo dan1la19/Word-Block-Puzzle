@@ -52,10 +52,10 @@ public class Blocks : MonoBehaviour
 		{
 			var letter = block.Letters[i / 3, i % 3];
 			var blockCell = newBlock.transform.GetChild(i);
-			if (letter is null || letter == ""/* || letter == " "*/)
+			if (letter is null || letter == "" || letter == " ")
 			{
 				blockCell.Find("Shell").gameObject.SetActive(false);
-			}
+            }
 			else
 			{
 				blockCell.Find("Shell/Text").gameObject.GetComponent<Text>().text = letter;
@@ -73,18 +73,19 @@ public class Blocks : MonoBehaviour
 				CreateBlock(BlockGenerator.GenerateBlock());
 				index++;
 			}
+            AnimationsController.Instance.AnimateBlocks();
 		}
-		//CreateBlock(blocks[index]);
+        //CreateBlock(blocks[index]);
 		//index++;
 	}
 
 	private void CreateBlock(Block block)
 	{
-		//TODO Block
-		var newBlock = Instantiate(Block, Block.transform.position, Quaternion.identity);
+        var newBlock = Instantiate(Block, Block.transform.position, Quaternion.identity);
 		SetParameters(newBlock, block);
 		newBlock.transform.SetParent(Canvas.transform, false);
-	}
+		LayoutRebuilder.ForceRebuildLayoutImmediate(Canvas.GetComponent<RectTransform>());
+    }
 	
 	public void Click()
 	{

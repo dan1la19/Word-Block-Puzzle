@@ -9,8 +9,21 @@ public class AnimationsController : MonoBehaviour
     public static AnimationsController Instance;
 
     [SerializeField] private Transform scorePlace;
+    [SerializeField] private Transform blocksPlace;
+    [SerializeField] private Transform blocksPos;
 
-    private void Awake() => Instance = this;
+    private Vector3 blocksDefaultPos;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    private void Start()
+    {
+        blocksDefaultPos = blocksPlace.position;
+        AnimateBlocks();
+    }
 
     public void AnimateLetter(Transform fieldCell)
     {
@@ -26,5 +39,13 @@ public class AnimationsController : MonoBehaviour
         //text.DOMove(scorePlace.position, 0.5f);
         //fieldCell.GetComponent<Image>().sprite = ;
         //fieldCell.Find("Text").GetComponent<Text>().text = "";
+    }
+
+    public void AnimateBlocks()
+    {
+        blocksPlace.position = blocksDefaultPos;
+        blocksPlace.DOMoveX(blocksPlace.position.x - blocksDefaultPos.x, 0.5f)
+            .SetEase(Ease.OutBack)
+            .Play();
     }
 }

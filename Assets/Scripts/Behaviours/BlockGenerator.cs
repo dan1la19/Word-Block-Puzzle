@@ -6,7 +6,7 @@ public static class BlockGenerator
 {
 	private static List<List<int>> templates = new List<List<int>>()
 	{
-		new List<int>() { 1 },
+		new List<int>() { 4 },
 		new List<int>() { 1, 4 },
 		new List<int>() { 3, 4 },
 		new List<int>() { 3, 4, 5 },
@@ -59,7 +59,7 @@ public static class BlockGenerator
 			block.Letters[cell / 3, cell % 3] = line[i].ToString();
 			i++;
 		}
-		return block;
+        return block;
     }
 
 	private static T GetRandomElement<T>(List<T> list, List<int> probabilities)
