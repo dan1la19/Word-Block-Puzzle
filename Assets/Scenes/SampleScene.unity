@@ -15449,6 +15449,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2046867954}
   - component: {fileID: 2046867955}
+  - component: {fileID: 2046867956}
   m_Layer: 5
   m_Name: Main Layout
   m_TagString: Untagged
@@ -15505,6 +15506,21 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &2046867956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2046867953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 590d43e0aa2e436429ba0583948bc865, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FieldBehaviour: {fileID: 234296612}
+  Data:
+    ScoreText: 
 --- !u!1001 &2067292219
 PrefabInstance:
   m_ObjectHideFlags: 0
