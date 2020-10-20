@@ -37,6 +37,8 @@ public static class BlockGenerator
     {
 		var block = new Block();
 		var pattern = GetRandomElement(templates, probabilityPatterns);
+		block.pattern = pattern;
+
 		var i = 0;
 		string line;
 		if (pattern.Count == 1) 

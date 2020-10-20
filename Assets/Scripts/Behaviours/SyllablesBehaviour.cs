@@ -16,7 +16,6 @@ public static class SyllablesBehaviour
             SyllablesOf2.AddSyllable(line.Substring(i, 2));
             SyllablesOf3.AddSyllable(line.Substring(i, 3));
         }
-        Debug.Log(line);
         SyllablesOf1.AddSyllable(line[line.Length - 2].ToString());
         SyllablesOf1.AddSyllable(line[line.Length - 1].ToString());
         SyllablesOf2.AddSyllable(line.Substring(line.Length - 2, 2));

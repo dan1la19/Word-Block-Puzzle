@@ -9,11 +9,10 @@ using UnityEngine.UI;
 public class Blocks : MonoBehaviour
 {
 	private List<Block> blocks;
-	private int index;
+	public int numberBlocks;
 
 	[SerializeField] TextAsset file;
-	public GameObject Block;
-	public GameObject Canvas;
+	[SerializeField] GameObject Block;
 
 	private void Start()
 	{
@@ -21,10 +20,8 @@ public class Blocks : MonoBehaviour
 		for (var i = 0; i < 3; i++)
 		{
 			CreateBlock(blocks[i]);
-			index++;
+			numberBlocks++;
 		}
-		//index++;
-		//NewBlocks();
 	}
 
 	private List<Block> GetBlocks()
@@ -65,26 +62,25 @@ public class Blocks : MonoBehaviour
 
 	public void NewBlocks()
 	{
-		index--;
-		if (index == 0)
+		numberBlocks--;
+		if (numberBlocks == 0)
 		{
 			for (var i = 0; i < 3; i++)
 			{
 				CreateBlock(BlockGenerator.GenerateBlock());
-				index++;
+				numberBlocks++;
 			}
             AnimationsController.Instance.AnimateBlocks();
 		}
-        //CreateBlock(blocks[index]);
-		//index++;
 	}
 
 	private void CreateBlock(Block block)
 	{
         var newBlock = Instantiate(Block, Block.transform.position, Quaternion.identity);
 		SetParameters(newBlock, block);
-		newBlock.transform.SetParent(Canvas.transform, false);
-		LayoutRebuilder.ForceRebuildLayoutImmediate(Canvas.GetComponent<RectTransform>());
+		newBlock.transform.SetParent(transform, false);
+		newBlock.GetComponent<BlockBehaviour>().pattern = block.pattern;
+		LayoutRebuilder.ForceRebuildLayoutImmediate(transform.GetComponent<RectTransform>());
     }
 	
 	public void Click()

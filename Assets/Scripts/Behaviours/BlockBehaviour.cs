@@ -5,17 +5,18 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
+using SaveSystem;
 
 public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     private Vector3 startPos;
     private FieldBehaviour fieldBehaviour;
     public Sprite Sprite;
+    public List<int> pattern;
 
     private void Start()
     {
-        fieldBehaviour = transform.parent.parent.
-            Find("Field").GetComponent<FieldBehaviour>();
+        fieldBehaviour = Load();
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -59,6 +60,7 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
                 var pos = GetPosition(blockCell.position.x, blockCell.position.y);
                 var fieldCell = fieldBehaviour.
                     GetFieldCell(Math.Round(pos.x, Config.Rounding), Math.Round(pos.y, Config.Rounding));
+
                 if (letter != " ")
                 {
                     fieldCell.GetComponent<Image>().sprite = Sprite;
@@ -70,8 +72,11 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         Destroy(gameObject);
         fieldBehaviour.UpdateScore(countLetters);
         fieldBehaviour.HighlightedWords();
-
         transform.parent.GetComponent<Blocks>().NewBlocks();
+        if (fieldBehaviour.isGameOver())
+            Debug.Log("Game Over");
+        //Save();
+        //TODO Save
     }
 
     private Vector2 GetPosition(float x, float y)
@@ -83,6 +88,26 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         x += fieldBehaviour.StartPos.x;
         y += fieldBehaviour.StartPos.y;
         return new Vector2(x, y);
+    }
+
+    private void Save()
+    {
+        var crypt = new Cryptography();
+        var encrypted = crypt.Encrypt(fieldBehaviour);
+        EasySave.Save("Save", encrypted);
+    }
+
+    private FieldBehaviour Load()
+    {
+        if (EasySave.HasKey<string>("Save"))
+        {
+            var crypt = new Cryptography();
+            return crypt.Decrypt<FieldBehaviour>(EasySave.Load<string>("Save"));
+        }
+        else
+        {
+            return transform.parent.parent.Find("Field").GetComponent<FieldBehaviour>();
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)

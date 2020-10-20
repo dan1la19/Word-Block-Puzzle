@@ -5,7 +5,6 @@ using UnityEngine;
 public class ButtonDeleteWord : MonoBehaviour
 {
     private FieldBehaviour fieldBehaviour;
-    private int length = 10;
 
     private void Start()
     {
@@ -25,13 +24,13 @@ public class ButtonDeleteWord : MonoBehaviour
 
     private void DeleteLetters(HashSet<int> visited, int index)
     {
+        var length = Config.FieldSize;
         if (index < 0 || index > length * length) return;
 
         if (!visited.Contains(index) && fieldBehaviour.indexesLetters.Contains(index))
         {
             visited.Add(index);
-            var fieldCell = fieldBehaviour.transform.GetChild(index);
-            fieldBehaviour.DeleteLetter(fieldCell);
+            fieldBehaviour.DeleteLetter(index);
             fieldBehaviour.indexesLetters.Remove(index);
             fieldBehaviour.UpdateScore(1);
 
