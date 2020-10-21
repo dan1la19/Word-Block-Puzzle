@@ -74,7 +74,7 @@ public class Blocks : MonoBehaviour
 		}
 	}
 
-	private void CreateBlock(Block block)
+	public void CreateBlock(Block block)
 	{
         var newBlock = Instantiate(Block, Block.transform.position, Quaternion.identity);
 		SetParameters(newBlock, block);

@@ -10,29 +10,33 @@ using UnityEngine.UI;
 public class FieldBehaviour : MonoBehaviour
 {
     private Dictionary<double, Dictionary<double, Transform>> fieldCells;
-    public Dictionary<Transform, int> indexesTransforms;
+    public Dictionary<Transform, int> IndexesTransforms;
     private HashSet<string> words;
     public Text ScoreText;
+    public Text Record;
 
-    public HashSet<int> freeCells;
-    public HashSet<int> indexesLetters;
+    public Dictionary<int, string> OccupiedCells;
+    public HashSet<int> FreeCells;
+    public HashSet<int> IndexesLetters;
 
     public Sprite SpriteDefault;
     public Sprite SpriteSelection;
+    public Sprite SpriteBlock;
     public float Dist { get; set; }
     public Vector3 StartPos { get; set; }
     private HashSet<int> lineX = new HashSet<int>();
     private HashSet<int> lineY = new HashSet<int>();
     [SerializeField] TextAsset file;
-    [SerializeField] Blocks Blocks;
+    [SerializeField] public Blocks Blocks;
+    [SerializeField] public Saving Saving;
 
     void Start()
     {
-        freeCells = new HashSet<int>();
+        FreeCells = new HashSet<int>();
         for (var i = 0; i < 100; i++)
-            freeCells.Add(i);
-        indexesLetters = new HashSet<int>();
-        indexesTransforms = new Dictionary<Transform, int>();
+            FreeCells.Add(i);
+        //IndexesLetters = new HashSet<int>();
+        IndexesTransforms = new Dictionary<Transform, int>();
         Dist = transform.GetChild(91).position.x - transform.GetChild(90).position.x;
         StartPos = transform.GetChild(90).position - new Vector3(Dist / 2, Dist / 2);
         SetFieldCells();
@@ -45,7 +49,7 @@ public class FieldBehaviour : MonoBehaviour
         for (var i = 0; i < 100; i++)
         {
             var fieldCell = transform.GetChild(i);
-            indexesTransforms[fieldCell] = i;
+            IndexesTransforms[fieldCell] = i;
             var pos = fieldCell.position - new Vector3(Dist / 2, Dist / 2);
             var x = Math.Round(pos.x, Config.Rounding);
             var y = Math.Round(pos.y, Config.Rounding);
@@ -69,6 +73,11 @@ public class FieldBehaviour : MonoBehaviour
         }
         SyllablesBehaviour.CalculateProbabilitys();
         return words;
+    }
+
+    public void SetRecord()
+    {
+        Record.text = ScoreText.text;
     }
 
     private void FindWords(HashSet<int> indexesLetters, HashSet<int> line, char flag)
@@ -111,8 +120,8 @@ public class FieldBehaviour : MonoBehaviour
 
     public void HighlightedWords()
     {
-        FindWords(indexesLetters, lineX, 'x');
-        FindWords(indexesLetters, lineY, 'y');
+        FindWords(IndexesLetters, lineX, 'x');
+        FindWords(IndexesLetters, lineY, 'y');
 
         lineX = new HashSet<int>();
         lineY = new HashSet<int>();
@@ -121,36 +130,38 @@ public class FieldBehaviour : MonoBehaviour
     public void DeleteLetter(int index)
     {
         var fieldCell = transform.GetChild(index);
-        freeCells.Add(index);
+        FreeCells.Add(index);
+        OccupiedCells.Remove(index);
         AnimationsController.Instance.AnimateLetter(fieldCell);
         fieldCell.GetComponent<Image>().sprite = SpriteDefault;
         fieldCell.Find("Text").GetComponent<Text>().text = "";
     }
 
-    public bool isGameOver()
+    public bool IsGameOver()
     {
+        var length = Config.FieldSize;
         for (var i = 0; i < Blocks.numberBlocks; i++)
         {
             var block = Blocks.transform.GetChild(i);
             var pattern = block.GetComponent<BlockBehaviour>().pattern;
             if (pattern.Count == 0) return false;
 
-            foreach (var freeCell in freeCells)
+            foreach (var freeCell in FreeCells)
             {
                 foreach (var inCell in pattern)
                 {
                     var contains = true;
                     foreach (var outCell in pattern)
                     {
-                        var freeCellVector = new Vector2(freeCell % 10, freeCell / 10);
+                        var freeCellVector = new Vector2(freeCell % length, freeCell / length);
                         var vector = new Vector2(outCell % 3, outCell / 3)
                             - new Vector2(inCell % 3, inCell / 3);
-                        var outFieldCell = vector.y * 10 + vector.x + freeCell;
+                        var outFieldCell = vector.y * length + vector.x + freeCell;
                         if (freeCellVector.x + vector.x < 0 
-                            || freeCellVector.x + vector.x > 9
+                            || freeCellVector.x + vector.x > length - 1
                             || freeCellVector.y + vector.y < 0
-                            || freeCellVector.y + vector.y > 9
-                            || !freeCells.Contains((int)outFieldCell)) 
+                            || freeCellVector.y + vector.y > length - 1
+                            || !FreeCells.Contains((int)outFieldCell)) 
                         {
                             contains = false;
                             break;
@@ -166,12 +177,15 @@ public class FieldBehaviour : MonoBehaviour
     public void UpdateScore(int points)
     {
         ScoreText.text = (int.Parse(ScoreText.text) + points).ToString();
+        if (int.Parse(Record.text) < int.Parse(ScoreText.text))
+        {
+            SetRecord();
+        }
+        Saving.Save();
     }
 
-    public void UpdateCheckItems(Transform fieldCell)
+    public void UpdateCheckItems(int index)
     {
-        var index = indexesTransforms[fieldCell];
-        freeCells.Remove(index);
         lineY.Add(index / 10);
         lineX.Add(index % 10);
     }

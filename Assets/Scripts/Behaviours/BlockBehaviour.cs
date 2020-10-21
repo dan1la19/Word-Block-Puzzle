@@ -12,14 +12,14 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
     private Vector3 startPos;
     public List<int> pattern;
 
-    [SerializeField] FieldBehaviour fieldBehaviour;
+    [SerializeField] FieldBehaviour FieldBehaviour;
     [SerializeField] Sprite Sprite;
     [SerializeField] Saving Saving;
 
     private void Start()
     {
         Saving = transform.parent.parent.GetComponent<Saving>();
-        fieldBehaviour = transform.parent.parent.
+        FieldBehaviour = transform.parent.parent.
             Find("Field").GetComponent<FieldBehaviour>();
     }
 
@@ -43,7 +43,7 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
             if (letter != "")
             {
                 var pos = GetPosition(blockCell.position.x, blockCell.position.y);
-                var fieldCell = fieldBehaviour.GetFieldCell(Math.Round(pos.x, Config.Rounding), Math.Round(pos.y, Config.Rounding));
+                var fieldCell = FieldBehaviour.GetFieldCell(Math.Round(pos.x, Config.Rounding), Math.Round(pos.y, Config.Rounding));
                 var text = fieldCell != null ? fieldCell.Find("Text").GetComponent<Text>().text : null;
                 if (text == null || text != "" && text != " " && letter != " ")
                 {
@@ -62,34 +62,40 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
             {
                 countLetters++;
                 var pos = GetPosition(blockCell.position.x, blockCell.position.y);
-                var fieldCell = fieldBehaviour.
+                var fieldCell = FieldBehaviour.
                     GetFieldCell(Math.Round(pos.x, Config.Rounding), Math.Round(pos.y, Config.Rounding));
 
+                var index = FieldBehaviour.IndexesTransforms[fieldCell];
                 if (letter != " ")
                 {
                     fieldCell.GetComponent<Image>().sprite = Sprite;
+                    fieldCell.Find("Text").GetComponent<Text>().text = letter;
+                    FieldBehaviour.OccupiedCells.Add(index, letter);
                 }
-                fieldCell.Find("Text").GetComponent<Text>().text = letter;
-                fieldBehaviour.UpdateCheckItems(fieldCell);
+                FieldBehaviour.FreeCells.Remove(index);
+                FieldBehaviour.UpdateCheckItems(index);
             }
         }
         Destroy(gameObject);
-        fieldBehaviour.UpdateScore(countLetters);
-        fieldBehaviour.HighlightedWords();
+        FieldBehaviour.UpdateScore(countLetters);
+        FieldBehaviour.HighlightedWords();
         transform.parent.GetComponent<Blocks>().NewBlocks();
-        if (fieldBehaviour.isGameOver())
+        if (FieldBehaviour.IsGameOver())
+        {
+            FieldBehaviour.SetRecord();
             Debug.Log("Game Over");
+        }
         Saving.Save();
     }
 
     private Vector2 GetPosition(float x, float y)
     {
-        x -= fieldBehaviour.StartPos.x;
-        y -= fieldBehaviour.StartPos.y;
-        x = (float)Math.Floor(x / fieldBehaviour.Dist) * fieldBehaviour.Dist;
-        y = (float)Math.Floor(y / fieldBehaviour.Dist) * fieldBehaviour.Dist;
-        x += fieldBehaviour.StartPos.x;
-        y += fieldBehaviour.StartPos.y;
+        x -= FieldBehaviour.StartPos.x;
+        y -= FieldBehaviour.StartPos.y;
+        x = (float)Math.Floor(x / FieldBehaviour.Dist) * FieldBehaviour.Dist;
+        y = (float)Math.Floor(y / FieldBehaviour.Dist) * FieldBehaviour.Dist;
+        x += FieldBehaviour.StartPos.x;
+        y += FieldBehaviour.StartPos.y;
         return new Vector2(x, y);
     }
 

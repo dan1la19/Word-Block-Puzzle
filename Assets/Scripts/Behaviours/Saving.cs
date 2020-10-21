@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class Saving : MonoBehaviour
 {
@@ -11,48 +12,66 @@ public class Saving : MonoBehaviour
 
     public void Start()
     {
-        Data = LoadData();
+        Data = Load();
         Unload();
+    }
+
+
+    private void Unload()
+    {
+        FieldBehaviour.ScoreText.text = Data.ScoreText;
+        FieldBehaviour.OccupiedCells = Data.GetOccupiedCells();
+        FieldBehaviour.IndexesLetters = new HashSet<int>();
+        FieldBehaviour.Record.text = Data.Record;
+
+        foreach (var i in Data.IndexesLetters) 
+        {
+            FieldBehaviour.IndexesLetters.Add(i);
+        }
+
+        foreach (var index in FieldBehaviour.OccupiedCells.Keys)
+        {
+            FieldBehaviour.transform.GetChild(index).GetChild(0).GetComponent<Text>().text =
+                FieldBehaviour.OccupiedCells[index];
+            var image = FieldBehaviour.transform.GetChild(index).GetComponent<Image>();
+            if (FieldBehaviour.IndexesLetters.Contains(index))
+                image.sprite = FieldBehaviour.SpriteSelection;
+            else
+                image.sprite = FieldBehaviour.SpriteBlock;
+        }
+
+        foreach(var block in Data.GetBlocks())
+        {
+            FieldBehaviour.Blocks.CreateBlock(block);
+        }
+    }
+
+    private void Download()
+    {
+        Data.ScoreText = FieldBehaviour.ScoreText.text;
+        Data.Record = FieldBehaviour.Record.text;
+        Data.SetOccupiedCells(FieldBehaviour.OccupiedCells);
+        Data.IndexesLetters = FieldBehaviour.IndexesLetters.ToList();
+
+        Data.Patterns = new List<List<int>>();
+        for (var i = 0; i < FieldBehaviour.Blocks.transform.childCount; i++)
+        {
+            var pattern = FieldBehaviour.Blocks.transform.
+                GetChild(i).GetComponent<BlockBehaviour>().pattern;
+            Data.Patterns.Add(pattern);
+        } 
+        
     }
 
     public void Save()
     {
         var crypt = new Cryptography();
-        UpdateData();
+        Download();
         var encrypted = crypt.Encrypt(Data);
         EasySave.Save("Save", encrypted);
     }
 
-    private void Unload()
-    {
-        FieldBehaviour.ScoreText.text = Data.ScoreText;
-
-        //for (var i = 0; i < 100; i++)
-        //{
-        //    var fieldCell = FieldBehaviour.transform.GetChild(i);
-        //    fieldCell.GetChild(0).GetComponent<Text>().text
-        //        = Data.FieldCells[i].GetChild(0).GetComponent<Text>().text;
-        //    fieldCell.GetComponent<Image>().sprite
-        //        = Data.FieldCells[i].GetComponent<Image>().sprite;
-        //}
-            
-    }
-
-    private void UpdateData()
-    {
-        Data.ScoreText = FieldBehaviour.ScoreText.text;
-
-        //for (var i = 0; i < 100; i++)
-        //{
-        //    var fieldCell = FieldBehaviour.transform.GetChild(i);
-        //    Data.FieldCells[i].GetChild(0).GetComponent<Text>().text 
-        //        = fieldCell.GetChild(0).GetComponent<Text>().text;
-        //    Data.FieldCells[i].GetComponent<Image>().sprite 
-        //        = fieldCell.GetComponent<Image>().sprite;
-        //}
-    }
-
-    public Data LoadData()
+    public Data Load()
     {
         if (EasySave.HasKey<string>("Save"))
         {

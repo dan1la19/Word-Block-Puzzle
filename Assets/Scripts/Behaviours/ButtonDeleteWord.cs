@@ -15,11 +15,12 @@ public class ButtonDeleteWord : MonoBehaviour
     {
         var visited = new HashSet<int>();
 
-        if (fieldBehaviour.indexesLetters.Contains(fieldBehaviour.indexesTransforms[transform]))
+        if (fieldBehaviour.IndexesLetters.Contains(fieldBehaviour.IndexesTransforms[transform]))
         {
-            var index = fieldBehaviour.indexesTransforms[transform];
+            var index = fieldBehaviour.IndexesTransforms[transform];
             DeleteLetters(visited, index);
-        } 
+        }
+        fieldBehaviour.Saving.Save();
     }
 
     private void DeleteLetters(HashSet<int> visited, int index)
@@ -27,20 +28,20 @@ public class ButtonDeleteWord : MonoBehaviour
         var length = Config.FieldSize;
         if (index < 0 || index > length * length) return;
 
-        if (!visited.Contains(index) && fieldBehaviour.indexesLetters.Contains(index))
+        if (!visited.Contains(index) && fieldBehaviour.IndexesLetters.Contains(index))
         {
             visited.Add(index);
             fieldBehaviour.DeleteLetter(index);
-            fieldBehaviour.indexesLetters.Remove(index);
+            fieldBehaviour.IndexesLetters.Remove(index);
             fieldBehaviour.UpdateScore(1);
 
-            if (index + 1 % length != length - 1)
+            if ((index + 1) % length != length && (index + 1) % length != -1)
                 DeleteLetters(visited, index + 1);
-            if (index - 1 % length != 0)
+            if ((index - 1) % length != -1 && (index - 1) % length != length)
                 DeleteLetters(visited, index - 1);
-            if (index + length / length != length - 1)
+            if ((index + length) / length != length)
                 DeleteLetters(visited, index + length);
-            if (index - length / length != 0)
+            if ((index - length) / length != -1)
                 DeleteLetters(visited, index - length);
         }
     }
