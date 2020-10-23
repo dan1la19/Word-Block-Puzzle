@@ -17,6 +17,7 @@ public class Blocks : MonoBehaviour
 	private void Start()
 	{
 		blocks = GetBlocks();
+		Debug.Log(blocks.Count);
 		for (var i = 0; i < 3; i++)
 		{
 			CreateBlock(blocks[i]);
