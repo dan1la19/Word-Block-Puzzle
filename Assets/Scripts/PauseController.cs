@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Krivodeling.UI.Effects;
 using UnityEngine;
 using DG.Tweening;
+using SaveSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -31,12 +32,13 @@ public class PauseController : MonoBehaviour
 
     public void ToggleSound()
     {
-        var isAudioOn = AudioManager.instance.ToggleAudio();
+        var isAudioOn = AudioManager.Instance.ToggleAudio();
         soundToggle.sprite = isAudioOn ? soundOn : soundOff;
     }
 
     public void Restart()
     {
+        EasySave.Delete<string>("Save");
         SceneManager.LoadScene(0);
     }
 
