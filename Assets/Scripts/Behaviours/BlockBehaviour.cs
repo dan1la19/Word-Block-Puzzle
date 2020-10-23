@@ -39,6 +39,7 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
                 var fieldCell = fieldBehaviour.GetFieldCell(Math.Round(pos.x, 6), Math.Round(pos.y, 6));
                 if (fieldCell == null || fieldCell.Find("Text").GetComponent<Text>().text != "")
                 {
+                    AudioManager.Instance.BlockReturn();
                     transform.position = startPos;
                     return;
                 }
@@ -60,9 +61,22 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
             }
         }
         Destroy(gameObject);
+<<<<<<< Updated upstream
         fieldBehaviour.UpdateScore(countLetters);
         fieldBehaviour.DeleteWords();
         transform.parent.GetComponent<Blocks>().NewBlock();
+=======
+        FieldBehaviour.UpdateScore(countLetters);
+        FieldBehaviour.HighlightedWords();
+        transform.parent.GetComponent<Blocks>().NewBlocks();
+        if (FieldBehaviour.IsGameOver())
+        {
+            FieldBehaviour.SetRecord();
+            Debug.Log("Game Over");
+        }
+        AudioManager.Instance.BlockPlace();
+        Saving.Save();
+>>>>>>> Stashed changes
     }
 
     private Vector2 GetPosition(float x, float y)
