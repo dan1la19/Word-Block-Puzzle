@@ -34,7 +34,7 @@ public class AnimationsController : MonoBehaviour
         var seq = DOTween.Sequence();
         seq.Append(cellClone.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InBack))
             .AppendCallback(() => Destroy(cellClone.gameObject));
-        AudioManager.Instance.WordDelte();
+
         //cellClone.transform.DOScale(Vector3.zero, 0.5f);
         //text.DOMove(scorePlace.position, 0.5f);
         //fieldCell.GetComponent<Image>().sprite = ;
@@ -47,6 +47,5 @@ public class AnimationsController : MonoBehaviour
         blocksPlace.DOMoveX(blocksPlace.position.x - blocksDefaultPos.x, 0.5f)
             .SetEase(Ease.OutBack)
             .Play();
-        AudioManager.Instance.BlocksApperance();
     }
 }

@@ -47,7 +47,6 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
                 var text = fieldCell != null ? fieldCell.Find("Text").GetComponent<Text>().text : null;
                 if (text == null || text != "" && text != " " && letter != " ")
                 {
-                    AudioManager.Instance.BlockReturn();
                     transform.position = startPos;
                     return;
                 }
@@ -87,7 +86,6 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
             FieldBehaviour.SetRecord();
             Debug.Log("Game Over");
         }
-        AudioManager.Instance.BlockPlace();
         Saving.Save();
     }
 
