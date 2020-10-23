@@ -70,6 +70,7 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
                 {
                     fieldCell.GetComponent<Image>().sprite = Sprite;
                     fieldCell.Find("Text").GetComponent<Text>().text = letter;
+                    fieldCell.GetChild(1).GetComponent<Text>().text = FieldBehaviour.PointsLetters[letter].ToString();
                     FieldBehaviour.OccupiedCells.Add(index, letter);
                 }
                 FieldBehaviour.FreeCells.Remove(index);

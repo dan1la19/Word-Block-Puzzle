@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ButtonDeleteWord : MonoBehaviour
 {
@@ -33,7 +34,6 @@ public class ButtonDeleteWord : MonoBehaviour
             visited.Add(index);
             fieldBehaviour.DeleteLetter(index);
             fieldBehaviour.IndexesLetters.Remove(index);
-            fieldBehaviour.UpdateScore(1);
 
             if ((index + 1) % length != length && (index + 1) % length != -1)
                 DeleteLetters(visited, index + 1);
