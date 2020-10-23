@@ -461,6 +461,7 @@ MonoBehaviour:
   numberBlocks: 0
   file: {fileID: 4900000, guid: 77a087158e47f5e458b96c9bb0adac9a, type: 3}
   Block: {fileID: 3020030996292293008, guid: e80db3eaa82c6834eac0dc8b6ad0f1ba, type: 3}
+  FieldBehaviour: {fileID: 234296612}
 --- !u!114 &41994483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16645,6 +16646,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 234296610}
     m_Modifications:
+    - target: {fileID: 4707190250916818035, guid: aa1719f15697139479453a5eb04796a0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4940049523087487094, guid: aa1719f15697139479453a5eb04796a0,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
