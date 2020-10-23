@@ -31,11 +31,8 @@ public class Saving : MonoBehaviour
 
         foreach (var index in FieldBehaviour.OccupiedCells.Keys)
         {
-            var fieldCell = FieldBehaviour.transform.GetChild(index);
-            fieldCell.GetChild(0).GetComponent<Text>().text =
+            FieldBehaviour.transform.GetChild(index).GetChild(0).GetComponent<Text>().text =
                 FieldBehaviour.OccupiedCells[index];
-            fieldCell.GetChild(1).GetComponent<Text>().text =
-                FieldBehaviour.PointsLetters[FieldBehaviour.OccupiedCells[index]].ToString();
             var image = FieldBehaviour.transform.GetChild(index).GetComponent<Image>();
             if (FieldBehaviour.IndexesLetters.Contains(index))
                 image.sprite = FieldBehaviour.SpriteSelection;

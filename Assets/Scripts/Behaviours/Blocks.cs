@@ -13,7 +13,6 @@ public class Blocks : MonoBehaviour
 
 	[SerializeField] TextAsset file;
 	[SerializeField] GameObject Block;
-	[SerializeField] FieldBehaviour FieldBehaviour;
 
 	private void Start()
 	{
@@ -57,8 +56,6 @@ public class Blocks : MonoBehaviour
 			else
 			{
 				blockCell.Find("Shell/Text").gameObject.GetComponent<Text>().text = letter;
-				blockCell.Find("Shell/Point").gameObject.GetComponent<Text>().text = 
-					FieldBehaviour.PointsLetters[letter].ToString();
 			}
 		}
 	}
