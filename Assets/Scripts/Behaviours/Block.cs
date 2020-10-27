@@ -6,11 +6,11 @@ public class Block
 {
 	private int row;
 	public string [,] Letters;
-	public List<int> pattern;
+	public List<int> Pattern;
 
 	public Block()
 	{
-		pattern = new List<int>();
+		Pattern = new List<int>();
 		Letters = new string[3, 3];
 	}
 

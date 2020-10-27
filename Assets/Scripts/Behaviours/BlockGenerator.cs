@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class BlockGenerator
 {
-	private static List<List<int>> templates = new List<List<int>>()
+	public static List<List<int>> Templates = new List<List<int>>()
 	{
 		new List<int>() { 4 },
 		new List<int>() { 1, 4 },
@@ -35,9 +35,9 @@ public static class BlockGenerator
 
 	public static Block GenerateBlock()
     {
+		var pattern = GetRandomElement(Templates, probabilityPatterns);
 		var block = new Block();
-		var pattern = GetRandomElement(templates, probabilityPatterns);
-		block.pattern = pattern;
+		block.Pattern = pattern;
 
 		var i = 0;
 		string line;

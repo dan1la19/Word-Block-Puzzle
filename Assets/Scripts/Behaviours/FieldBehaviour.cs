@@ -84,7 +84,7 @@ public class FieldBehaviour : MonoBehaviour
     public Sprite SpriteDefault;
     public Sprite SpriteSelection;
     public Sprite SpriteBlock;
-    public float Dist { get; set; }
+    public static float Dist;
     public Vector3 StartPos { get; set; }
     private HashSet<int> lineX = new HashSet<int>();
     private HashSet<int> lineY = new HashSet<int>();

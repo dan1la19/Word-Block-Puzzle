@@ -10,7 +10,23 @@ public class Blocks : MonoBehaviour
 {
 	private List<Block> blocks;
 	public int numberBlocks;
-
+	public Dictionary<List<int>, Vector2> Offset = new Dictionary<List<int>, Vector2>() 
+	{
+		{ BlockGenerator.Templates[0], new Vector2(FieldBehaviour.Dist, FieldBehaviour.Dist) },
+		{ BlockGenerator.Templates[1], new Vector2() },
+		{ BlockGenerator.Templates[2], new Vector2() },
+		{ BlockGenerator.Templates[3], new Vector2() },
+		{ BlockGenerator.Templates[4], new Vector2() },
+		{ BlockGenerator.Templates[5], new Vector2() },
+		{ BlockGenerator.Templates[6], new Vector2() },
+		{ BlockGenerator.Templates[7], new Vector2() },
+		{ BlockGenerator.Templates[8], new Vector2() },
+		{ BlockGenerator.Templates[9], new Vector2() },
+		{ BlockGenerator.Templates[10], new Vector2() },
+		{ BlockGenerator.Templates[11], new Vector2() },
+		{ BlockGenerator.Templates[12], new Vector2() },
+		{ BlockGenerator.Templates[13], new Vector2() },
+	};
 	[SerializeField] TextAsset file;
 	[SerializeField] GameObject Block;
 	[SerializeField] FieldBehaviour FieldBehaviour;
@@ -83,14 +99,16 @@ public class Blocks : MonoBehaviour
         var newBlock = Instantiate(Block, Block.transform.position, Quaternion.identity);
 		SetParameters(newBlock, block);
 		newBlock.transform.SetParent(transform, false);
-		newBlock.GetComponent<BlockBehaviour>().pattern = block.pattern;
+		if (Offset.ContainsKey(block.Pattern))
+			newBlock.GetComponent<RectTransform>().anchoredPosition = Offset[block.Pattern];
+		newBlock.GetComponent<BlockBehaviour>().pattern = block.Pattern;
 		LayoutRebuilder.ForceRebuildLayoutImmediate(transform.GetComponent<RectTransform>());
     }
 	
-	public void Click()
-	{
-		var block = new Block();
-		block.AddLine(" ");
-		CreateBlock(block);
-	}
+	//public void Click()
+	//{
+	//	var block = new Block();
+	//	block.AddLine(" ");
+	//	CreateBlock(block);
+	//}
 }
