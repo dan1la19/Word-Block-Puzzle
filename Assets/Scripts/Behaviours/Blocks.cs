@@ -12,20 +12,20 @@ public class Blocks : MonoBehaviour
 	public int numberBlocks;
 	public Dictionary<List<int>, Vector2> Offset = new Dictionary<List<int>, Vector2>() 
 	{
-		{ BlockGenerator.Templates[0], new Vector2(FieldBehaviour.Dist, FieldBehaviour.Dist) },
-		{ BlockGenerator.Templates[1], new Vector2() },
-		{ BlockGenerator.Templates[2], new Vector2() },
-		{ BlockGenerator.Templates[3], new Vector2() },
-		{ BlockGenerator.Templates[4], new Vector2() },
-		{ BlockGenerator.Templates[5], new Vector2() },
-		{ BlockGenerator.Templates[6], new Vector2() },
-		{ BlockGenerator.Templates[7], new Vector2() },
-		{ BlockGenerator.Templates[8], new Vector2() },
-		{ BlockGenerator.Templates[9], new Vector2() },
-		{ BlockGenerator.Templates[10], new Vector2() },
-		{ BlockGenerator.Templates[11], new Vector2() },
-		{ BlockGenerator.Templates[12], new Vector2() },
-		{ BlockGenerator.Templates[13], new Vector2() },
+		{ BlockGenerator.Templates[0], new Vector2(0, -140) },
+		{ BlockGenerator.Templates[1], new Vector2(0, -190) },
+		{ BlockGenerator.Templates[2], new Vector2(50, -140) },
+		{ BlockGenerator.Templates[3], new Vector2(0, -140) },
+		{ BlockGenerator.Templates[4], new Vector2(0, -140) },
+		{ BlockGenerator.Templates[5], new Vector2(-50, -190) },
+		{ BlockGenerator.Templates[6], new Vector2(50, -190) },
+		{ BlockGenerator.Templates[7], new Vector2(-50, -190) },
+		{ BlockGenerator.Templates[8], new Vector2(50, -190) },
+		{ BlockGenerator.Templates[9], new Vector2(50, -190) },
+		{ BlockGenerator.Templates[10], new Vector2(0, -140) },
+		{ BlockGenerator.Templates[11], new Vector2(0, -140) },
+		{ BlockGenerator.Templates[12],  new Vector2(0, -140) },
+		{ BlockGenerator.Templates[13],  new Vector2(0, -140) },
 	};
 	[SerializeField] TextAsset file;
 	[SerializeField] GameObject Block;
