@@ -9,9 +9,11 @@ public class Saving : MonoBehaviour
 {
     [SerializeField] FieldBehaviour FieldBehaviour;
     public Data Data;
+    public static Saving Instance;
 
     public void Start()
     {
+        Instance = this;
         Data = Load();
         Unload();
     }
@@ -59,11 +61,14 @@ public class Saving : MonoBehaviour
         Data.Patterns = new List<List<int>>();
         for (var i = 0; i < FieldBehaviour.Blocks.transform.childCount; i++)
         {
-            var pattern = FieldBehaviour.Blocks.transform.
-                GetChild(i).GetComponent<BlockBehaviour>().pattern;
+            var blockPlace = FieldBehaviour.Blocks.transform.GetChild(i);
+            if (blockPlace.childCount == 0) 
+                continue;
+
+            var pattern = blockPlace.GetChild(0).GetComponent<BlockBehaviour>().pattern;
             Data.Patterns.Add(pattern);
-        } 
-        
+        }
+
     }
 
     public void Save()

@@ -14,6 +14,7 @@ public class FieldBehaviour : MonoBehaviour
     private HashSet<string> words;
     public Text ScoreText;
     public Text Record;
+    public static FieldBehaviour Instance;
 
     public Dictionary<string, int> PointsLetters = new Dictionary<string, int>() 
     {
@@ -92,7 +93,13 @@ public class FieldBehaviour : MonoBehaviour
     [SerializeField] public Blocks Blocks;
     [SerializeField] public Saving Saving;
 
-    void Start()
+    void Awake()
+    {
+        Instance = this;
+        words = GetWords();
+    }
+
+    private void Start()
     {
         FreeCells = new HashSet<int>();
         for (var i = 0; i < 100; i++)
@@ -102,7 +109,6 @@ public class FieldBehaviour : MonoBehaviour
         Dist = transform.GetChild(91).position.x - transform.GetChild(90).position.x;
         StartPos = transform.GetChild(90).position - new Vector3(Dist / 2, Dist / 2);
         SetFieldCells();
-        words = GetWords();
     }
 
     private void SetFieldCells()
@@ -205,10 +211,12 @@ public class FieldBehaviour : MonoBehaviour
     public bool IsGameOver()
     {
         var length = Config.FieldSize;
-        for (var i = 0; i < Blocks.numberBlocks; i++)
+        for (var i = 0; i < Blocks.transform.childCount; i++)
         {
-            var block = Blocks.transform.GetChild(i);
-            var pattern = block.GetComponent<BlockBehaviour>().pattern;
+            var blockPlace = Blocks.transform.GetChild(i);
+            if (blockPlace.childCount == 0)
+                continue;
+            var pattern = blockPlace.GetChild(0).GetComponent<BlockBehaviour>().pattern;
             if (pattern.Count == 0) return false;
 
             foreach (var freeCell in FreeCells)

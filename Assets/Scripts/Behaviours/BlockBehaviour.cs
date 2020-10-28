@@ -18,9 +18,8 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     private void Start()
     {
-        Saving = transform.parent.parent.GetComponent<Saving>();
-        FieldBehaviour = transform.parent.parent.
-            Find("Field").GetComponent<FieldBehaviour>();
+        Saving = Saving.Instance;
+        FieldBehaviour = FieldBehaviour.Instance;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -72,7 +71,7 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
                     fieldCell.GetComponent<Image>().sprite = Sprite;
                     fieldCell.Find("Text").GetComponent<Text>().text = letter;
                     fieldCell.GetChild(1).GetComponent<Text>().text = FieldBehaviour.PointsLetters[letter].ToString();
-                    FieldBehaviour.OccupiedCells.Add(index, letter);
+                    FieldBehaviour.OccupiedCells[index] = letter;
                 }
                 FieldBehaviour.FreeCells.Remove(index);
                 FieldBehaviour.UpdateCheckItems(index);
@@ -81,7 +80,7 @@ public class BlockBehaviour : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
         Destroy(gameObject);
         FieldBehaviour.UpdateScore(countLetters);
         FieldBehaviour.HighlightedWords();
-        transform.parent.GetComponent<Blocks>().NewBlocks();
+        FieldBehaviour.Instance.Blocks.NewBlocks();
         if (FieldBehaviour.IsGameOver())
         {
             FieldBehaviour.SetRecord();

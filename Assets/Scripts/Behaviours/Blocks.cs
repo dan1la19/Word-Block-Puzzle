@@ -30,36 +30,38 @@ public class Blocks : MonoBehaviour
 	[SerializeField] TextAsset file;
 	[SerializeField] GameObject Block;
 	[SerializeField] FieldBehaviour FieldBehaviour;
+	[SerializeField] List<GameObject> BlockPlaces;
 
 	private void Start()
 	{
-		blocks = GetBlocks();
-		Debug.Log(blocks.Count);
-		for (var i = 0; i < 3; i++)
-		{
-			CreateBlock(blocks[i]);
-			numberBlocks++;
-		}
+		NewBlocks();
+		//blocks = GetBlocks();
+		//Debug.Log(blocks.Count);
+		//for (var i = 0; i < 3; i++)
+		//{
+		//	CreateBlock(blocks[i]);
+		//	numberBlocks++;
+		//}
 	}
 
-	private List<Block> GetBlocks()
-	{
-		var blocks = new List<Block>();
-		var block = new Block();
-		foreach (var line in file.text.Split('\n'))
-		{
-			if (line == "") continue;
-			var word = line.Remove(line.Length - 1);
-			if (word == "*")
-			{
-				blocks.Add(block);
-				block = new Block();
-				continue;
-			}
-			block.AddLine(word);
-		}
-		return blocks;
-	}
+	//private List<Block> GetBlocks()
+	//{
+	//	var blocks = new List<Block>();
+	//	var block = new Block();
+	//	foreach (var line in file.text.Split('\n'))
+	//	{
+	//		if (line == "") continue;
+	//		var word = line.Remove(line.Length - 1);
+	//		if (word == "*")
+	//		{
+	//			blocks.Add(block);
+	//			block = new Block();
+	//			continue;
+	//		}
+	//		block.AddLine(word);
+	//	}
+	//	return blocks;
+	//}
 
 	private void SetParameters(GameObject newBlock, Block block)
 	{
@@ -82,7 +84,6 @@ public class Blocks : MonoBehaviour
 
 	public void NewBlocks()
 	{
-		numberBlocks--;
 		if (numberBlocks == 0)
 		{
 			for (var i = 0; i < 3; i++)
@@ -92,13 +93,15 @@ public class Blocks : MonoBehaviour
 			}
             AnimationsController.Instance.AnimateBlocks();
 		}
+		numberBlocks--;
 	}
 
 	public void CreateBlock(Block block)
 	{
-        var newBlock = Instantiate(Block, Block.transform.position, Quaternion.identity);
+        var newBlock = Instantiate(Block, BlockPlaces[numberBlocks].transform);
 		SetParameters(newBlock, block);
-		newBlock.transform.SetParent(transform, false);
+
+		//newBlock.transform.SetParent(BlockPlaces[numberBlocks - 1].transform, false);
 		if (Offset.ContainsKey(block.Pattern))
 			newBlock.GetComponent<RectTransform>().anchoredPosition = Offset[block.Pattern];
 		newBlock.GetComponent<BlockBehaviour>().pattern = block.Pattern;
