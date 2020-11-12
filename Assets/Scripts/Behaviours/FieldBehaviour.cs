@@ -145,7 +145,7 @@ public class FieldBehaviour : MonoBehaviour
 
     public void SetRecord()
     {
-        Record.text = ScoreText.text;
+        //Record.text = ScoreText.text;
     }
 
     private void FindWords(HashSet<int> indexesLetters, HashSet<int> line, char flag)
@@ -250,10 +250,10 @@ public class FieldBehaviour : MonoBehaviour
     public void UpdateScore(int points)
     {
         ScoreText.text = (int.Parse(ScoreText.text) + points).ToString();
-        if (int.Parse(Record.text) < int.Parse(ScoreText.text))
-        {
-            SetRecord();
-        }
+        // if (int.Parse(Record.text) < int.Parse(ScoreText.text))
+        // {
+        //     SetRecord();
+        // }
         Saving.Save();
     }
 

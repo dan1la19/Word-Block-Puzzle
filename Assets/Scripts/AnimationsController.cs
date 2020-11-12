@@ -17,10 +17,6 @@ public class AnimationsController : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-    }
-
-    private void Start()
-    {
         blocksDefaultPos = blocksPlace.position;
         AnimateBlocks();
     }

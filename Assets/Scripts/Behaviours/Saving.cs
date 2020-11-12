@@ -24,7 +24,7 @@ public class Saving : MonoBehaviour
         FieldBehaviour.ScoreText.text = Data.ScoreText;
         FieldBehaviour.OccupiedCells = Data.GetOccupiedCells();
         FieldBehaviour.IndexesLetters = new HashSet<int>();
-        FieldBehaviour.Record.text = Data.Record;
+        //FieldBehaviour.Record.text = Data.Record;
 
         foreach (var i in Data.IndexesLetters) 
         {
@@ -54,7 +54,7 @@ public class Saving : MonoBehaviour
     private void Download()
     {
         Data.ScoreText = FieldBehaviour.ScoreText.text;
-        Data.Record = FieldBehaviour.Record.text;
+        //Data.Record = FieldBehaviour.Record.text;
         Data.SetOccupiedCells(FieldBehaviour.OccupiedCells);
         Data.IndexesLetters = FieldBehaviour.IndexesLetters.ToList();
 

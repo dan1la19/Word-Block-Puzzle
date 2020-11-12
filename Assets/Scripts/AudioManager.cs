@@ -23,6 +23,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip blocksApperanceSound;
     [SerializeField] private AudioClip blockReturnSound;
     [SerializeField] private AudioClip tapSound;
+    [SerializeField] private AudioClip gameOverSound;
     [Header("Sources")]
     [SerializeField] private AudioSource soundsSource;
 
@@ -38,7 +39,7 @@ public class AudioManager : MonoBehaviour
     public void BlocksApperance() => soundsSource.PlayOneShot(blocksApperanceSound);
     public void BlockReturn() => soundsSource.PlayOneShot(blockReturnSound);
     public void Tap() => soundsSource.PlayOneShot(tapSound);
-
+    public void GameOver() => soundsSource.PlayOneShot(gameOverSound);
     public bool ToggleAudio()
     {
         isAudioOff = !isAudioOff;
